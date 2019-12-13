@@ -6,7 +6,7 @@
 package com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.token;
 
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.oauth.FabStatusToken;
-import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.Interfaces.basico.ItfUsuario;
+import com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.FabTipoAgenteClienteRest;
 
 /**
  * @author sfurbino
@@ -15,26 +15,24 @@ import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.Interfaces.basic
  */
 public interface ItfTokenGestao {
 
-    public String getTokenUsuario(ItfUsuario pUsuario);
+    public String getToken();
 
-    public String getTokenSistema();
+    public boolean isTemTokemAtivo();
 
-    public String getTokenUsuarioLogado();
-
-    public boolean isTemTokemAtivoSistema();
-
-    public boolean isTemTokenAtivoUsuarioLogado();
-
-    public boolean istemTokemAtivoUsuario(ItfUsuario pUsuario);
-
-    public boolean gerarNovoToken(ItfUsuario pUsuario);
-
-    public boolean gerarNovoTokenSistema();
+    public String gerarNovoToken();
 
     public boolean excluirToken();
 
     public boolean isPossuiAutenticacaoDeUsuario();
 
     public FabStatusToken getStatusToken();
+
+    public FabTipoAgenteClienteRest getTipoAgente();
+
+    public boolean validarToken();
+
+    public boolean armazenarToken();
+
+    public boolean loadTokenArmazenado();
 
 }

@@ -5,8 +5,6 @@
  */
 package com.super_bits.modulosSB.SBCore.integracao.rocketChat.api.channel;
 
-import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
-import com.super_bits.modulosSB.SBCore.ConfigGeral.arquivosConfiguracao.ConfigModulo;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.ItfFabricaIntegracaoRest;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.conexaoWebServiceClient.FabTipoConexaoRest;
 import com.super_bits.modulosSB.SBCore.integracao.rocketChat.api.FabConfigRocketChat;
@@ -14,7 +12,6 @@ import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.conexaoWebSer
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.ItfApiServicoTokenCliente;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.servicoRegistrado.FabTipoAutenticacaoRest;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.servicoRegistrado.InfoConfigRestClientIntegracao;
-import com.super_bits.modulosSB.SBCore.integracao.libRestClient.implementacao.ServicoTokenClienteRestIntegracao;
 
 /**
  *
@@ -22,10 +19,12 @@ import com.super_bits.modulosSB.SBCore.integracao.libRestClient.implementacao.Se
  */
 @InfoConfigRestClientIntegracao(enderecosDocumentacao = "https://rocket.chat/docs/developer-guides/rest-api/",
         tipoAutenticacao = FabTipoAutenticacaoRest.CHAVE_ACESSO_METODOLOGIA_PROPRIA,
-        nomeIntegracao = FabConfigRocketChat.NOME_APLICACAO)
-public enum FabApiRestRocketChatV1Channel implements ItfFabricaIntegracaoRest<FabConfigRocketChat> {
+        nomeIntegracao = FabConfigRocketChat.NOME_APLICACAO,
+        configuracao = FabConfigRocketChat.class
+)
+public enum FabApiRestRocketChatV1Channel implements ItfFabricaIntegracaoRest {
 
-    @InfoConsumoRestService(getPachServico = "/api/v1/groups.list",
+    @InfoConsumoRestService(getPachServico = "/api/v1/groups.listAll",
             tipoConexao = FabTipoConexaoRest.GET,
             urlDocumentacao = "https://rocket.chat/docs/developer-guides/rest-api/groups/list/ ")
     GRUPO_LISTAR,
@@ -34,23 +33,27 @@ public enum FabApiRestRocketChatV1Channel implements ItfFabricaIntegracaoRest<Fa
             urlDocumentacao = "https://rocket.chat/docs/developer-guides/rest-api/groups/create/"
     )
     GRUPO_NOVO,
+    @InfoConsumoRestService(getPachServico = "/api/v1/groups.listAll",
+            tipoConexao = FabTipoConexaoRest.GET,
+            urlDocumentacao = "https://rocket.chat/docs/developer-guides/rest-api/groups/list/ ")
+    GRUPO_EXISTE_GRUPO,
+    /**
+     * -dados: '{ "roomId": "ByehQjC44FwMeiLbX", "userId": "nSYqWzZ4GsKTX4dyK"
+     * }'
+     *
+     */
+    @InfoConsumoRestService(getPachServico = "/api/v1/groups.invite",
+            tipoConexao = FabTipoConexaoRest.POST,
+            urlDocumentacao = "https://rocket.chat/docs/developer-guides/rest-api/groups/invite/ ")
     GRUPO_ADICIONAR_USUARIO,
+    @InfoConsumoRestService(getPachServico = "/api/v1/groups.delete",
+            tipoConexao = FabTipoConexaoRest.POST,
+            urlDocumentacao = "https://rocket.chat/docs/developer-guides/rest-api/groups/delete/")
     GRUPO_EXCLUIR_GRUPO;
 
     @Override
     public ItfApiServicoTokenCliente getApiTokenAcesso() {
-        return new ServicoTokenClienteRestIntegracao(getConfiguracao());
-    }
-
-    @Override
-    public Class<? extends FabConfigRocketChat> getFabricaConfiguracao() {
-        return FabConfigRocketChat.class;
-
-    }
-
-    @Override
-    public ConfigModulo getConfiguracao() {
-        return SBCore.getConfigModulo(getFabricaConfiguracao());
+        throw new UnsupportedOperationException("O METODO AINDA N\u00c3O FOI IMPLEMENTADO.");
     }
 
 }

@@ -19,19 +19,4 @@ public interface ItfTokenGestaoBasico extends ItfTokenGestao {
         return false;
     }
 
-    @Override
-    public default String getTokenUsuario(ItfUsuario pUsuario) {
-        return getTokenSistema();
-    }
-
-    @Override
-    public default String getTokenUsuarioLogado() {
-        return getTokenSistema();
-    }
-
-    @Override
-    public default boolean isTemTokenAtivoUsuarioLogado() {
-        return isTemTokemAtivoSistema();
-    }
-
 }

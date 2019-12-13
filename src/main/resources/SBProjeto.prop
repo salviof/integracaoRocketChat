@@ -4,5 +4,5 @@ NOME_SOCIAL=${pom.name}
 TIPO_PROJETO=${pom.packaging}
 ENDERECO_WEB=https://github.com/salviof/intRocketChat.git
 NOME_CLIENTE=coletivoJava
-GRUPO_PROJETO=integracoes
+GRUPO_PROJETO=integracao
 DIRETORIO_BASE=

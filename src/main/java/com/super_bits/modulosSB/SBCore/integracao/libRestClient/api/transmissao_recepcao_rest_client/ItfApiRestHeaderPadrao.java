@@ -5,14 +5,15 @@
  */
 package com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.transmissao_recepcao_rest_client;
 
-import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.conexaoWebServiceClient.RespostaWebServiceSimples;
+import java.util.Map;
 
 /**
- * @author sfurbino
- * @since 09/12/2019
+ * @author desenvolvedorninja01
+ * @since 13/12/2019
  * @version 1.0
  */
-public interface ItfAcaoApiRest extends ItfProcessadorEnvioPacote, ItfProcessadorRespostaPacote {
+public interface ItfApiRestHeaderPadrao {
 
-    public RespostaWebServiceSimples getResposta();
+    public Map<String, String> getHeaderPadrao();
+
 }

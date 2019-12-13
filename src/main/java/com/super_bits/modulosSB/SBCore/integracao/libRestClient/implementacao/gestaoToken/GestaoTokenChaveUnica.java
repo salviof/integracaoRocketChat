@@ -5,8 +5,8 @@
  */
 package com.super_bits.modulosSB.SBCore.integracao.libRestClient.implementacao.gestaoToken;
 
-import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.oauth.FabStatusToken;
-import com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.token.ItfTokenGestao;
+import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.ItfFabricaIntegracaoRest;
+import com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.FabTipoAgenteClienteRest;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.Interfaces.basico.ItfUsuario;
 
 /**
@@ -15,61 +15,11 @@ import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.Interfaces.basic
  * @since 13/12/2019
  * @version 1.0
  */
-public class GestaoTokenChaveUnica implements ItfTokenGestao {
+public abstract class GestaoTokenChaveUnica extends GestaoTokenGenerico {
 
-    @Override
-    public String getTokenUsuario(ItfUsuario pUsuario) {
-        throw new UnsupportedOperationException("O METODO AINDA N\u00c3O FOI IMPLEMENTADO.");
-    }
-
-    @Override
-    public String getTokenSistema() {
-        throw new UnsupportedOperationException("O METODO AINDA N\u00c3O FOI IMPLEMENTADO.");
-    }
-
-    @Override
-    public String getTokenUsuarioLogado() {
-        throw new UnsupportedOperationException("O METODO AINDA N\u00c3O FOI IMPLEMENTADO.");
-    }
-
-    @Override
-    public boolean isTemTokemAtivoSistema() {
-        throw new UnsupportedOperationException("O METODO AINDA N\u00c3O FOI IMPLEMENTADO.");
-    }
-
-    @Override
-    public boolean isTemTokenAtivoUsuarioLogado() {
-        throw new UnsupportedOperationException("O METODO AINDA N\u00c3O FOI IMPLEMENTADO.");
-    }
-
-    @Override
-    public boolean istemTokemAtivoUsuario(ItfUsuario pUsuario) {
-        throw new UnsupportedOperationException("O METODO AINDA N\u00c3O FOI IMPLEMENTADO.");
-    }
-
-    @Override
-    public boolean gerarNovoToken(ItfUsuario pUsuario) {
-        throw new UnsupportedOperationException("O METODO AINDA N\u00c3O FOI IMPLEMENTADO.");
-    }
-
-    @Override
-    public boolean gerarNovoTokenSistema() {
-        throw new UnsupportedOperationException("O METODO AINDA N\u00c3O FOI IMPLEMENTADO.");
-    }
-
-    @Override
-    public boolean excluirToken() {
-        throw new UnsupportedOperationException("O METODO AINDA N\u00c3O FOI IMPLEMENTADO.");
-    }
-
-    @Override
-    public boolean isPossuiAutenticacaoDeUsuario() {
-        throw new UnsupportedOperationException("O METODO AINDA N\u00c3O FOI IMPLEMENTADO.");
-    }
-
-    @Override
-    public FabStatusToken getStatusToken() {
-        throw new UnsupportedOperationException("O METODO AINDA N\u00c3O FOI IMPLEMENTADO.");
+    public GestaoTokenChaveUnica(Class<? extends ItfFabricaIntegracaoRest> pClasseEndpoints,
+            FabTipoAgenteClienteRest pTipoAgente, ItfUsuario pUsuario) {
+        super(pClasseEndpoints, pTipoAgente, pUsuario);
     }
 
 }

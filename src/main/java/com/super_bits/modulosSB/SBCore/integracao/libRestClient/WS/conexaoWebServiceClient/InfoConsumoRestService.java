@@ -22,6 +22,8 @@ public @interface InfoConsumoRestService {
 
     public String[] parametrosGet() default {};
 
+    public String[] parametrosProcessamento() default {};
+
     public String[] parametrosPost() default {};
 
     public String urlDocumentacao() default "";

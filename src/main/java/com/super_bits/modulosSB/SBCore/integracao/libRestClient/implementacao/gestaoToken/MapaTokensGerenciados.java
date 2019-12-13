@@ -10,6 +10,7 @@ import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreListas;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.ItfFabricaIntegracaoRest;
 import static com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.FabTipoAgenteClienteRest.SISTEMA;
 import static com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.FabTipoAgenteClienteRest.USUARIO;
+import com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.token.ItfTokenGestao;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.Interfaces.basico.ItfUsuario;
 
 import java.util.HashMap;
@@ -21,7 +22,7 @@ import java.util.Map;
  */
 public class MapaTokensGerenciados {
 
-    private final static Map<String, GestaoTokenOath2> AUTENTICADORES_REGISTRADOS = new HashMap<>();
+    private final static Map<String, ItfTokenGestao> AUTENTICADORES_REGISTRADOS = new HashMap<>();
     private final static Map<String, Class> API_POR_CHAVE_PUBLICA = new HashMap<>();
 
     private static String getIdentificacaoAPIUsuario(String codigoApi) {
@@ -36,8 +37,8 @@ public class MapaTokensGerenciados {
         return codigoApi + SBCore.getGrupoProjeto();
     }
 
-    public static void registrarAutenticador(GestaoTokenOath2 pAutenticador, String codigoApi) {
-        switch (pAutenticador.getTipoCliente()) {
+    public static void registrarAutenticador(ItfTokenGestao pAutenticador, String codigoApi) {
+        switch (pAutenticador.getTipoAgente()) {
             case USUARIO:
                 AUTENTICADORES_REGISTRADOS.put(getIdentificacaoAPIUsuario(codigoApi), pAutenticador);
                 break;
@@ -45,33 +46,33 @@ public class MapaTokensGerenciados {
                 AUTENTICADORES_REGISTRADOS.put(getIdentificacaoAPISistema(codigoApi), pAutenticador);
                 break;
             default:
-                throw new AssertionError(pAutenticador.getTipoCliente().name());
+                throw new AssertionError(pAutenticador.getTipoAgente().name());
         }
 
     }
 
-    public static void registrarAutenticador(GestaoTokenOath2 pAutenticador, ItfFabricaIntegracaoRest api) {
+    public static void registrarAutenticador(ItfTokenGestao pAutenticador, ItfFabricaIntegracaoRest api) {
         registrarAutenticador(pAutenticador, api.getClass().getSimpleName());
 
     }
 
-    public static GestaoTokenOath2 getAutenticadorUsuarioLogado(ItfFabricaIntegracaoRest api) {
+    public static ItfTokenGestao getAutenticadorUsuarioLogado(ItfFabricaIntegracaoRest api) {
         return AUTENTICADORES_REGISTRADOS.get(getIdentificacaoAPIUsuario(api.getClass().getSimpleName()));
     }
 
-    public static GestaoTokenOath2 getAutenticadorUsuarioLogado(ItfFabricaIntegracaoRest api, ItfUsuario pUsuario) {
+    public static ItfTokenGestao getAutenticadorUsuarioLogado(ItfFabricaIntegracaoRest api, ItfUsuario pUsuario) {
         return AUTENTICADORES_REGISTRADOS.get(getIdentificacaoAPIUsuario(api.getClass().getSimpleName()));
     }
 
-    public static GestaoTokenOath2 getAutenticadorSistemaAtual(ItfFabricaIntegracaoRest api) {
+    public static ItfTokenGestao getAutenticadorSistemaAtual(ItfFabricaIntegracaoRest api) {
         return AUTENTICADORES_REGISTRADOS.get(getIdentificacaoAPISistema(api.getClass().getSimpleName()));
     }
 
-    public static GestaoTokenOath2 getAutenticadorSistemaAtual(String api) {
+    public static ItfTokenGestao getAutenticadorSistemaAtual(String api) {
         return AUTENTICADORES_REGISTRADOS.get(getIdentificacaoAPISistema(api));
     }
 
-    public static GestaoTokenOath2 getAutenticadorUsuarioLogado(String api) {
+    public static ItfTokenGestao getAutenticadorUsuarioLogado(String api) {
         return AUTENTICADORES_REGISTRADOS.get(getIdentificacaoAPIUsuario(api));
     }
 

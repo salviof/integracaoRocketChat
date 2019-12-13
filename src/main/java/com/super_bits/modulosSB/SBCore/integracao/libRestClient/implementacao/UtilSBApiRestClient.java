@@ -28,7 +28,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.coletivojava.fw.api.tratamentoErros.FabErro;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.ItfFabricaIntegracaoRest;
+import com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.FabTipoAgenteClienteRest;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.servicoRegistrado.InfoConfigRestClientIntegracao;
+import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.Interfaces.basico.ItfUsuario;
 
 /**
  *
@@ -134,11 +136,13 @@ public class UtilSBApiRestClient {
         }
     }
 
-    public static ItfAcaoApiRest getAcaoDoContexto(ItfFabricaIntegracaoRest p, Object... pParametros) {
+    public static ItfAcaoApiRest getAcaoDoContexto(ItfFabricaIntegracaoRest p, FabTipoAgenteClienteRest pTipoAgente, ItfUsuario pUsuario, Object... pParametros) {
         Class classeImp = UtilSBApiRestClientReflexao.getClasseImplementacao((ItfFabricaIntegracaoRest) p);
         try {
-
-            return (ItfAcaoApiRest) classeImp.getConstructor(Object[].class).newInstance(new Object[]{pParametros});
+            if (pTipoAgente.equals(FabTipoAgenteClienteRest.USUARIO) && pUsuario == null) {
+                pUsuario = SBCore.getUsuarioLogado();
+            }
+            return (ItfAcaoApiRest) classeImp.getConstructor(FabTipoAgenteClienteRest.class, ItfUsuario.class, Object[].class).newInstance(pTipoAgente, pUsuario, new Object[]{pParametros});
         } catch (SecurityException ex) {
             Logger.getLogger(UtilSBApiRestClient.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {

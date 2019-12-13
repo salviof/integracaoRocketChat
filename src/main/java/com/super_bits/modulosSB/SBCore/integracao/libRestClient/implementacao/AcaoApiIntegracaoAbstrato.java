@@ -4,10 +4,10 @@
  */
 package com.super_bits.modulosSB.SBCore.integracao.libRestClient.implementacao;
 
-import com.super_bits.modulosSB.SBCore.integracao.libRestClient.implementacao.gestaoToken.MapaTokensGerenciados;
-import com.super_bits.modulosSB.SBCore.integracao.libRestClient.implementacao.gestaoToken.GestaoTokenOath2;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.ItfFabricaIntegracaoRest;
+import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.conexaoWebServiceClient.ConsumoWSExecucao;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.FabTipoAgenteClienteRest;
+import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.Interfaces.basico.ItfUsuario;
 
 /**
  *
@@ -15,29 +15,15 @@ import com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.FabTipoAgent
  */
 public abstract class AcaoApiIntegracaoAbstrato extends AcaoApiIntegracaoAbstratoBasico {
 
-    public AcaoApiIntegracaoAbstrato(ItfFabricaIntegracaoRest pIntegracaoEndpoint, Object... parametros) {
-        this(pIntegracaoEndpoint, false, parametros);
-
-    }
-
-    /**
-     *
-     * @param pEndpointIntegracaoRest
-     * @param pModificarPropriedades Permitie modificar prorpiedades antes da
-     * conexao (não executa conexção imediata..)
-     * @param pParametros
-     */
-    public AcaoApiIntegracaoAbstrato(ItfFabricaIntegracaoRest pEndpointIntegracaoRest, boolean pModificarPropriedades, Object... pParametros) {
-        super(pEndpointIntegracaoRest, pParametros);
+    public AcaoApiIntegracaoAbstrato(ItfFabricaIntegracaoRest pIntegracaoEndpoint,
+            FabTipoAgenteClienteRest pTipoAgente, ItfUsuario pUsuario, Object... pParametros) {
+        super(pIntegracaoEndpoint, pTipoAgente, pUsuario, pParametros);
 
     }
 
     @Override
-    public String gerarTokenAcesso() {
-
-        MapaTokensGerenciados.registrarAutenticador(new GestaoTokenOath2(fabricaIntegracao.getFabricaConfiguracao(), FabTipoAgenteClienteRest.SISTEMA, fabricaIntegracao.getClass()), fabricaIntegracao);
-        return MapaTokensGerenciados.getAutenticadorSistemaAtual(fabricaIntegracao).getTokenDeAcesso().getTokenValido();
-
+    public void gerarResposta(ConsumoWSExecucao pConsumoRest) {
+        super.gerarResposta(pConsumoRest); //chamada super do metodo (implementação classe pai)
     }
 
 }

@@ -17,17 +17,11 @@ import java.util.Map;
  */
 public interface ItfProcessadorEnvioPacote {
 
-    public default ItfAcaoApiRest executarAcaoRest(String... parametros) {
-        return null;
-    }
-
     public String getUrlServidor();
 
     public boolean isMetodoEnviaDados();
 
     public String gerarUrlRequisicao();
-
-    public String gerarTokenAcesso();
 
     public FabTipoConexaoRest gerarTipoRequisicao();
 

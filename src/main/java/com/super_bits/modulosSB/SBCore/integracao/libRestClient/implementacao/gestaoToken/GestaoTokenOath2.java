@@ -7,7 +7,6 @@ package com.super_bits.modulosSB.SBCore.integracao.libRestClient.implementacao.g
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.FabTipoAgenteClienteRest;
 import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
 import com.super_bits.modulosSB.SBCore.ConfigGeral.arquivosConfiguracao.ConfigModulo;
-import com.super_bits.modulosSB.SBCore.ConfigGeral.arquivosConfiguracao.ItfFabConfigModulo;
 
 import java.util.Date;
 import com.super_bits.modulosSB.SBCore.ConfigGeral.arquivosConfiguracao.tipoModulos.integracaoOauth.FabPropriedadeModuloIntegracaoOauth;
@@ -21,7 +20,7 @@ import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.Interfaces.basic
  *
  * @author SalvioF
  */
-public class GestaoTokenOath2 implements ItfTokenGestaoOauth {
+public abstract class GestaoTokenOath2 implements ItfTokenGestaoOauth {
 
     private final FabTipoAgenteClienteRest tipoCliente;
     private final ConfigModulo confiModulo;
@@ -34,7 +33,8 @@ public class GestaoTokenOath2 implements ItfTokenGestaoOauth {
     private String codigoSolicitacao;
     private InfoTokenOauth2 tokenDeAcesso;
 
-    public FabTipoAgenteClienteRest getTipoCliente() {
+    @Override
+    public FabTipoAgenteClienteRest getTipoAgente() {
         return tipoCliente;
     }
 
@@ -51,10 +51,11 @@ public class GestaoTokenOath2 implements ItfTokenGestaoOauth {
         return codigoSolicitacao != null;
     }
 
-    public GestaoTokenOath2(Class<? extends ItfFabConfigModulo> arquivoConfiguracao, FabTipoAgenteClienteRest pTipocliente, Class<? extends ItfFabricaIntegracaoRest> pFabricaOauth) {
-        tipoCliente = pTipocliente;
-        confiModulo = SBCore.getConfigModulo(arquivoConfiguracao);
-        fabricaOauth = pFabricaOauth;
+    public GestaoTokenOath2(ItfFabricaIntegracaoRest pIntegracaoEndpoint,
+            FabTipoAgenteClienteRest pTipoAgente, ItfUsuario pUsuario) {
+        tipoCliente = pTipoAgente;
+        confiModulo = pIntegracaoEndpoint.getConfiguracao();
+        fabricaOauth = pIntegracaoEndpoint.getClass();
         atualizarDados();
     }
 
@@ -80,6 +81,7 @@ public class GestaoTokenOath2 implements ItfTokenGestaoOauth {
         }
     }
 
+    @Override
     public FabStatusToken getStatusToken() {
 
         if (getTokenDeAcesso() != null) {
@@ -185,51 +187,6 @@ public class GestaoTokenOath2 implements ItfTokenGestaoOauth {
 
     public void setCodigoSolicitacao(String codigoSolicitacao) {
         this.codigoSolicitacao = codigoSolicitacao;
-    }
-
-    @Override
-    public String getTokenUsuario(ItfUsuario pUsuario) {
-        throw new UnsupportedOperationException("O METODO AINDA N\u00c3O FOI IMPLEMENTADO.");
-    }
-
-    @Override
-    public String getTokenSistema() {
-        throw new UnsupportedOperationException("O METODO AINDA N\u00c3O FOI IMPLEMENTADO.");
-    }
-
-    @Override
-    public String getTokenUsuarioLogado() {
-        throw new UnsupportedOperationException("O METODO AINDA N\u00c3O FOI IMPLEMENTADO.");
-    }
-
-    @Override
-    public boolean isTemTokemAtivoSistema() {
-        throw new UnsupportedOperationException("O METODO AINDA N\u00c3O FOI IMPLEMENTADO.");
-    }
-
-    @Override
-    public boolean isTemTokenAtivoUsuarioLogado() {
-        throw new UnsupportedOperationException("O METODO AINDA N\u00c3O FOI IMPLEMENTADO.");
-    }
-
-    @Override
-    public boolean istemTokemAtivoUsuario(ItfUsuario pUsuario) {
-        throw new UnsupportedOperationException("O METODO AINDA N\u00c3O FOI IMPLEMENTADO.");
-    }
-
-    @Override
-    public boolean gerarNovoToken(ItfUsuario pUsuario) {
-        throw new UnsupportedOperationException("O METODO AINDA N\u00c3O FOI IMPLEMENTADO.");
-    }
-
-    @Override
-    public boolean gerarNovoTokenSistema() {
-        throw new UnsupportedOperationException("O METODO AINDA N\u00c3O FOI IMPLEMENTADO.");
-    }
-
-    @Override
-    public boolean excluirToken() {
-        throw new UnsupportedOperationException("O METODO AINDA N\u00c3O FOI IMPLEMENTADO.");
     }
 
 }

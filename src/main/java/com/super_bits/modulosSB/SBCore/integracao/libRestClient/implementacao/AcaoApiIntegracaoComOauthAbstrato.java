@@ -6,6 +6,8 @@
 package com.super_bits.modulosSB.SBCore.integracao.libRestClient.implementacao;
 
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.ItfFabricaIntegracaoRest;
+import com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.FabTipoAgenteClienteRest;
+import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.Interfaces.basico.ItfUsuario;
 
 /**
  *
@@ -15,8 +17,8 @@ import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.ItfFabricaInt
  */
 public abstract class AcaoApiIntegracaoComOauthAbstrato extends AcaoApiIntegracaoAbstrato {
 
-    public AcaoApiIntegracaoComOauthAbstrato(ItfFabricaIntegracaoRest pIntegracaoEndpoint, Object... parametros) {
-        super(pIntegracaoEndpoint, parametros);
+    public AcaoApiIntegracaoComOauthAbstrato(ItfFabricaIntegracaoRest pIntegracaoEndpoint, FabTipoAgenteClienteRest pTipoAgente, ItfUsuario pUsuario, Object... pParametros) {
+        super(pIntegracaoEndpoint, pTipoAgente, pUsuario, pParametros);
     }
 
 }

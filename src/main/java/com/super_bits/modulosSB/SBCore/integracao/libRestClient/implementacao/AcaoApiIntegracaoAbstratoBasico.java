@@ -21,6 +21,7 @@ import java.util.Map;
 import javax.ws.rs.core.HttpHeaders;
 import org.coletivojava.fw.api.tratamentoErros.FabErro;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.ItfFabricaIntegracaoRest;
+import com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.FabTipoAgenteClienteRest;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.token.ItfTokenGestao;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.Interfaces.basico.ItfUsuario;
 
@@ -35,6 +36,7 @@ public abstract class AcaoApiIntegracaoAbstratoBasico implements ItfAcaoApiRest 
     protected InfoConsumoRestService infoRest;
     private String corpoRequisicaoGerado;
     private String urlRequisicaoGerada;
+    private ItfTokenGestao tokenGestao;
     private FabTipoConexaoRest tipoRequisicao;
     private Map<String, String> cabecalhoGerado;
     private boolean postarInformacoes;
@@ -42,14 +44,14 @@ public abstract class AcaoApiIntegracaoAbstratoBasico implements ItfAcaoApiRest 
     private String token;
     protected Object[] parametros;
 
-    public AcaoApiIntegracaoAbstratoBasico(ItfFabricaIntegracaoRest conexao, Object... pParametros) {
-        this.fabricaIntegracao = conexao;
-        infoRest = UtilSBApiRestClient.getInformacoesConsumoRest(conexao);
+    public AcaoApiIntegracaoAbstratoBasico(ItfFabricaIntegracaoRest pIntegracaoEndpoint, FabTipoAgenteClienteRest pTipoAgente, ItfUsuario pUsuario, Object... pParametros) {
+        this.fabricaIntegracao = pIntegracaoEndpoint;
+        infoRest = UtilSBApiRestClient.getInformacoesConsumoRest(pIntegracaoEndpoint);
         parametros = pParametros;
         try {
             executarAcao();
         } catch (Throwable t) {
-            SBCore.RelatarErro(FabErro.SOLICITAR_REPARO, "Erro criando ação de integração Rest em:" + conexao, t);
+            SBCore.RelatarErro(FabErro.SOLICITAR_REPARO, "Erro criando ação de integração Rest em:" + pIntegracaoEndpoint, t);
         }
 
     }
@@ -59,17 +61,11 @@ public abstract class AcaoApiIntegracaoAbstratoBasico implements ItfAcaoApiRest 
     }
 
     @Override
-    public String gerarTokenAcesso() {
-        return MapaTokensGerenciados.getAutenticadorSistemaAtual(fabricaIntegracao).getTokenDeAcesso().getTokenValido();
-
-    }
-
-    @Override
     public String gerarUrlRequisicao() {
         if (infoRest == null) {
             return getUrlServidor();
         } else {
-            return (getUrlServidor() + infoRest.getPachServico()).replace("//", "/");
+            return (getUrlServidor() + infoRest.getPachServico());
         }
     }
 
@@ -104,19 +100,8 @@ public abstract class AcaoApiIntegracaoAbstratoBasico implements ItfAcaoApiRest 
 
     @Override
     public Map<String, String> gerarCabecalho() {
-        Map<String, String> cabecalho = new ArrayMap<>();
-        if (infoRest != null) {
-            if (infoRest.tipoInformacaoEnviada().getMediaType() != null) {
-                cabecalho.put(HttpHeaders.CONTENT_TYPE, infoRest.tipoInformacaoEnviada().getMediaType().toString());
-            }
-            if (infoRest.adicionarAutenticacaoBearer()) {
-                cabecalho.put("Authorization", "Bearer " + token);
-            }
-        }
-        if (!UtilSBCoreStringValidador.isNuloOuEmbranco(corpoRequisicaoGerado)) {
-            cabecalho.put(HttpHeaders.CONTENT_LENGTH, String.valueOf(corpoRequisicaoGerado.length()));
-        }
-        return cabecalho;
+
+        return UtilSBApiRestClientReflexao.getHeaderPadrao(fabricaIntegracao, this).getHeaderPadrao();
     }
 
     @Override
@@ -138,8 +123,9 @@ public abstract class AcaoApiIntegracaoAbstratoBasico implements ItfAcaoApiRest 
     }
 
     private void executarAcao() {
+
         urlRequisicaoGerada = gerarUrlRequisicao();
-        token = gerarTokenAcesso();
+
         tipoRequisicao = gerarTipoRequisicao();
         postarInformacoes = defineRequisicaoPostaInformacoes();
         corpoRequisicaoGerado = gerarCorpoRequisicao();
@@ -176,17 +162,19 @@ public abstract class AcaoApiIntegracaoAbstratoBasico implements ItfAcaoApiRest 
     }
 
     @Override
-    public ItfRespostaWebServiceSimples getResposta() {
+    public RespostaWebServiceSimples getResposta() {
         return resposta;
     }
 
     @Override
     public ItfTokenGestao getTokenSistemaGestao() {
-        return MapaTokensGerenciados.getAutenticadorSistemaAtual(fabricaIntegracao);
+        return fabricaIntegracao.getGestaoToken();
     }
 
     @Override
     public ItfTokenGestao getTokenUsuarioGestao(ItfUsuario pUsuario) {
+        ItfTokenGestao gestao = MapaTokensGerenciados.getAutenticadorSistemaAtual(fabricaIntegracao);
+
         return MapaTokensGerenciados.getAutenticadorUsuarioLogado(fabricaIntegracao, pUsuario);
     }
 

@@ -5,6 +5,7 @@
  */
 package com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.servicoRegistrado;
 
+import com.super_bits.modulosSB.SBCore.ConfigGeral.arquivosConfiguracao.ItfFabConfigModulo;
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -26,5 +27,7 @@ public @interface InfoConfigRestClientIntegracao {
     public String[] enderecosDocumentacao() default {};
 
     public FabTipoAutenticacaoRest tipoAutenticacao();
+
+    public Class<? extends ItfFabConfigModulo> configuracao();
 
 }
