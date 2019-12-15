@@ -5,6 +5,7 @@
  */
 package com.super_bits.modulosSB.SBCore.integracao.rocketChat.api.channel;
 
+import com.super_bits.modulos.SBAcessosModel.model.UsuarioSB;
 import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.conexaoWebServiceClient.RespostaWebServiceSimples;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.token.ItfTokenGestao;
@@ -13,6 +14,8 @@ import com.super_bits.modulosSB.SBCore.integracao.testes.geradorCodigo.GeradorAp
 import com.super_bits.modulosSB.SBCore.integracao.testes.geradorCodigo.GeradorGestaoTokenAcessoIntegracaoRest;
 import com.super_bits.modulosSB.SBCore.integracao.testes.geradorCodigo.GeradorImplementacaoIntegracaoRest;
 import com.super_bits.modulosSB.SBCore.integracao.testes.geradorCodigo.GeradorImplementacaoIntegracaoRestHeaderPadrao;
+import com.super_bits.modulosSB.SBCore.modulos.objetos.InfoCampos.ItensGenericos.basico.UsuarioAplicacaoEmExecucao;
+import com.super_bits.modulosSB.SBCore.modulos.objetos.MapaObjetosProjetoAtual;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -56,7 +59,16 @@ public class FabApiRestRocketChatV1ChannelTest {
         }
 
         RespostaWebServiceSimples resposta = FabApiRestRocketChatV1Channel.GRUPO_LISTAR.getAcao().getResposta();
+        MapaObjetosProjetoAtual.adcionarObjeto(UsuarioAplicacaoEmExecucao.class);
+        UsuarioAplicacaoEmExecucao usuario = new UsuarioAplicacaoEmExecucao();
+        UsuarioSB novoUsuairo = new UsuarioSB();
+        novoUsuairo.setNome("Salvio");
+        novoUsuairo.setSenha("123321");
 
+        System.out.println(usuario.getEmail());
+
+        RespostaWebServiceSimples resp = FabApiRestRocketChatV1Channel.GRUPO_LISTAR.getAcao(novoUsuairo).getResposta();
+        System.out.println(resp.getRespostaTexto());
         Assert.assertTrue("A resposta não foi retornada com sucesso", resposta.isSucesso());
         System.out.println(resposta.getRespostaTexto());
     }

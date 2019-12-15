@@ -5,20 +5,16 @@
 package com.super_bits.modulosSB.SBCore.integracao.libRestClient.implementacao;
 
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.implementacao.gestaoToken.MapaTokensGerenciados;
-import com.google.api.client.util.ArrayMap;
 import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
 import com.super_bits.modulosSB.SBCore.ConfigGeral.arquivosConfiguracao.ConfigModulo;
-import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreStringValidador;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.RespostaWebServiceRestIntegracao;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.conexaoWebServiceClient.ConsumoWSExecucao;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.conexaoWebServiceClient.FabTipoConexaoRest;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.conexaoWebServiceClient.InfoConsumoRestService;
-import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.conexaoWebServiceClient.ItfRespostaWebServiceSimples;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.conexaoWebServiceClient.RespostaWebServiceSimples;
 
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.transmissao_recepcao_rest_client.ItfAcaoApiRest;
 import java.util.Map;
-import javax.ws.rs.core.HttpHeaders;
 import org.coletivojava.fw.api.tratamentoErros.FabErro;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.ItfFabricaIntegracaoRest;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.FabTipoAgenteClienteRest;
@@ -41,13 +37,21 @@ public abstract class AcaoApiIntegracaoAbstratoBasico implements ItfAcaoApiRest 
     private Map<String, String> cabecalhoGerado;
     private boolean postarInformacoes;
     private RespostaWebServiceRestIntegracao resposta;
+    private ItfUsuario usuario;
     private String token;
     protected Object[] parametros;
+    private FabTipoAgenteClienteRest tipoAgente;
 
     public AcaoApiIntegracaoAbstratoBasico(ItfFabricaIntegracaoRest pIntegracaoEndpoint, FabTipoAgenteClienteRest pTipoAgente, ItfUsuario pUsuario, Object... pParametros) {
         this.fabricaIntegracao = pIntegracaoEndpoint;
         infoRest = UtilSBApiRestClient.getInformacoesConsumoRest(pIntegracaoEndpoint);
         parametros = pParametros;
+        usuario = pUsuario;
+        if (usuario == null) {
+            tipoAgente = FabTipoAgenteClienteRest.SISTEMA;
+        } else {
+            tipoAgente = pTipoAgente;
+        }
         try {
             executarAcao();
         } catch (Throwable t) {
@@ -167,15 +171,30 @@ public abstract class AcaoApiIntegracaoAbstratoBasico implements ItfAcaoApiRest 
     }
 
     @Override
-    public ItfTokenGestao getTokenSistemaGestao() {
-        return fabricaIntegracao.getGestaoToken();
-    }
+    public ItfTokenGestao getTokenGestao() {
+        if (tokenGestao == null) {
+            switch (tipoAgente) {
+                case USUARIO:
+                    tokenGestao = MapaTokensGerenciados.getAutenticadorUsuarioLogado(fabricaIntegracao, usuario);
+                    if (tokenGestao == null) {
+                        tokenGestao = UtilSBApiRestClientReflexao.getNovaInstanciaGestaoAutenticador(fabricaIntegracao, tipoAgente, usuario);
+                        MapaTokensGerenciados.registrarAutenticador(tokenGestao, fabricaIntegracao);
+                    }
+                    break;
+                case SISTEMA:
+                    tokenGestao = MapaTokensGerenciados.getAutenticadorSistemaAtual(fabricaIntegracao);
+                    if (tokenGestao == null) {
+                        tokenGestao = UtilSBApiRestClientReflexao.getNovaInstanciaGestaoAutenticador(fabricaIntegracao, tipoAgente, usuario);
+                        MapaTokensGerenciados.registrarAutenticador(tokenGestao, fabricaIntegracao);
+                    }
+                    break;
+                default:
+                    throw new AssertionError(tipoAgente.name());
 
-    @Override
-    public ItfTokenGestao getTokenUsuarioGestao(ItfUsuario pUsuario) {
-        ItfTokenGestao gestao = MapaTokensGerenciados.getAutenticadorSistemaAtual(fabricaIntegracao);
+            }
+        }
 
-        return MapaTokensGerenciados.getAutenticadorUsuarioLogado(fabricaIntegracao, pUsuario);
+        return tokenGestao;
     }
 
 }

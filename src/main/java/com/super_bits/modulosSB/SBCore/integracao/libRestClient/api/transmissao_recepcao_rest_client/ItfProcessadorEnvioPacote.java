@@ -29,8 +29,6 @@ public interface ItfProcessadorEnvioPacote {
 
     public String gerarCorpoRequisicao();
 
-    public ItfTokenGestao getTokenSistemaGestao();
-
-    public ItfTokenGestao getTokenUsuarioGestao(ItfUsuario pUsuario);
+    public ItfTokenGestao getTokenGestao();
 
 }

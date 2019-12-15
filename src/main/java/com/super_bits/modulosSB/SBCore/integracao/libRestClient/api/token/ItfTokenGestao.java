@@ -7,6 +7,7 @@ package com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.token;
 
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.oauth.FabStatusToken;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.FabTipoAgenteClienteRest;
+import org.json.simple.JSONObject;
 
 /**
  * @author sfurbino
@@ -31,8 +32,10 @@ public interface ItfTokenGestao {
 
     public boolean validarToken();
 
-    public boolean armazenarToken();
+    public boolean armazenarRespostaToken(String pJson);
 
-    public boolean loadTokenArmazenado();
+    public String loadTokenArmazenado();
+
+    public JSONObject loadTokenArmazenadoComoJsonObject();
 
 }

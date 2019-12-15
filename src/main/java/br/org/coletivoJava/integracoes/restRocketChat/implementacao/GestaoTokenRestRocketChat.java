@@ -16,29 +16,34 @@ import org.json.simple.JSONObject;
 public class GestaoTokenRestRocketChat extends GestaoTokenChaveUnica {
 
     @Override
-    public boolean isTemTokemAtivo() {
-        return false;
-    }
-
-    @Override
     public String gerarNovoToken() {
         String url = getConfig().getPropriedade(FabConfigRocketChat.URL_SERVIDOR_ROCKET_CHAT) + "/api/v1/login";
         String usuarioSistema = null;
         String senhaSistema = null;
-        switch (getTipoAgente()) {
-            case USUARIO:
-                break;
-            case SISTEMA:
-                usuarioSistema = getConfig().getPropriedade(FabConfigRocketChat.USUARIO_ASSISTENTE_DE_CANAIS);
-                senhaSistema = getConfig().getPropriedade(FabConfigRocketChat.SENHA_ASSISTENTE_DE_CANAIS);
-                break;
-            default:
-                throw new AssertionError(getTipoAgente().name());
 
+        JSONObject ultimoRetornoToken = loadTokenArmazenadoComoJsonObject();
+        String token = null;
+        if (ultimoRetornoToken == null) {
+            switch (getTipoAgente()) {
+                case USUARIO:
+                    usuarioSistema = usuario.getNome();
+                    senhaSistema = usuario.getSenha();
+                    break;
+                case SISTEMA:
+                    usuarioSistema = getConfig().getPropriedade(FabConfigRocketChat.USUARIO_ASSISTENTE_DE_CANAIS);
+                    senhaSistema = getConfig().getPropriedade(FabConfigRocketChat.SENHA_ASSISTENTE_DE_CANAIS);
+                    break;
+                default:
+                    throw new AssertionError(getTipoAgente().name());
+
+            }
+            RespostaWebServiceSimples resposta = UtilSBApiRestClient.getRespostaRest(url, FabTipoConexaoRest.POST, true,
+                    new HashMap<>(), "user=" + usuarioSistema + "&password=" + senhaSistema);
+            ultimoRetornoToken = resposta.getRespostaComoObjetoJson();
+            ((JSONObject) ultimoRetornoToken.get("data")).get("authToken").toString();
+            armazenarRespostaToken(resposta.getResposta());
         }
-        RespostaWebServiceSimples resposta = UtilSBApiRestClient.getRespostaRest(url, FabTipoConexaoRest.POST, true,
-                new HashMap<>(), "user=" + usuarioSistema + "&password=" + senhaSistema);
-        String token = ((JSONObject) resposta.getRespostaComoObjetoJson().get("data")).get("authToken").toString();
+        token = ((JSONObject) ultimoRetornoToken.get("data")).get("authToken").toString();
         return token;
 
     }
@@ -52,16 +57,6 @@ public class GestaoTokenRestRocketChat extends GestaoTokenChaveUnica {
     @Override
     public boolean validarToken() {
         return isTemTokemAtivo();
-    }
-
-    @Override
-    public boolean armazenarToken() {
-        throw new UnsupportedOperationException("O METODO AINDA N\u00c3O FOI IMPLEMENTADO.");
-    }
-
-    @Override
-    public boolean loadTokenArmazenado() {
-        throw new UnsupportedOperationException("O METODO AINDA N\u00c3O FOI IMPLEMENTADO.");
     }
 
 }

@@ -13,6 +13,7 @@ import com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.FabTipoAgent
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.token.ItfTokenGestao;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.implementacao.UtilSBApiRestClientReflexao;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.Interfaces.basico.ItfUsuario;
+import org.json.simple.JSONObject;
 
 /**
  *
@@ -22,10 +23,10 @@ import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.Interfaces.basic
  */
 public abstract class GestaoTokenGenerico implements ItfTokenGestao {
 
-    private final FabTipoAgenteClienteRest tipoAgente;
-    private final ItfUsuario usuario;
-    private final Class<? extends ItfFabricaIntegracaoRest> classeFabricaAcessos;
-    private final ItfConfigModulo configuracoesAmbiente;
+    protected final FabTipoAgenteClienteRest tipoAgente;
+    protected final ItfUsuario usuario;
+    protected final Class<? extends ItfFabricaIntegracaoRest> classeFabricaAcessos;
+    protected final ItfConfigModulo configuracoesAmbiente;
     private String token;
 
     public GestaoTokenGenerico(Class<? extends ItfFabricaIntegracaoRest> pClasseEndpoints,
@@ -34,6 +35,11 @@ public abstract class GestaoTokenGenerico implements ItfTokenGestao {
         usuario = pUsuario;
         configuracoesAmbiente = UtilSBApiRestClientReflexao.getConfigmodulo(pClasseEndpoints);
         classeFabricaAcessos = pClasseEndpoints;
+    }
+
+    @Override
+    public boolean isTemTokemAtivo() {
+        return token != null;
     }
 
     @Override
@@ -46,15 +52,13 @@ public abstract class GestaoTokenGenerico implements ItfTokenGestao {
     }
 
     @Override
-    public boolean isTemTokemAtivo() {
-        return token == null;
-
-    }
-
-    @Override
     public String getToken() {
         if (token == null) {
-            token = gerarNovoToken();
+            try {
+                token = gerarNovoToken();
+            } catch (Throwable t) {
+                token = null;
+            }
         }
         return token;
     }
@@ -77,6 +81,66 @@ public abstract class GestaoTokenGenerico implements ItfTokenGestao {
     public boolean excluirToken() {
         token = null;
         return true;
+    }
+
+    @Override
+    public boolean armazenarRespostaToken(String pJson) {
+        switch (tipoAgente) {
+            case USUARIO:
+                if (usuario != null) {
+                    if (getConfig().getRepositorioDeArquivosExternos().putConteudoRecursoExterno(usuario.getEmail(), pJson)) {
+                        return true;
+                    }
+                }
+
+            case SISTEMA:
+                if (getConfig().getRepositorioDeArquivosExternos().putConteudoRecursoExterno("tokensistema", pJson)) {
+                    return true;
+                }
+
+            default:
+                return false;
+
+        }
+
+    }
+
+    @Override
+    public JSONObject loadTokenArmazenadoComoJsonObject() {
+        switch (tipoAgente) {
+            case USUARIO:
+                if (usuario != null) {
+
+                    return getConfig().getRepositorioDeArquivosExternos().getJsonObjeto(usuario.getEmail());
+
+                }
+
+            case SISTEMA:
+                return getConfig().getRepositorioDeArquivosExternos().getJsonObjeto("tokensistema");
+
+            default:
+
+        }
+        return null;
+    }
+
+    @Override
+    public String loadTokenArmazenado() {
+        switch (tipoAgente) {
+            case USUARIO:
+                if (usuario != null) {
+
+                    return getConfig().getRepositorioDeArquivosExternos().getTexto(usuario.getEmail());
+
+                }
+
+            case SISTEMA:
+                return getConfig().getRepositorioDeArquivosExternos().getTexto("tokensistema");
+
+            default:
+
+        }
+        return null;
     }
 
 }
