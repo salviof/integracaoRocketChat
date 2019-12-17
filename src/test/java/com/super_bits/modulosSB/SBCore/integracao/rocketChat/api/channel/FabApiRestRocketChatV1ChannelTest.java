@@ -5,21 +5,17 @@
  */
 package com.super_bits.modulosSB.SBCore.integracao.rocketChat.api.channel;
 
-import testes.testesSupers.TestesApiRest;
 import br.org.coletivoJava.integracoes.restRocketChat.api.channel.FabApiRestRocketChatV1Channel;
 import com.super_bits.modulos.SBAcessosModel.model.UsuarioSB;
 import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.conexaoWebServiceClient.RespostaWebServiceSimples;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.token.ItfTokenGestao;
 import com.super_bits.modulosSB.SBCore.integracao.rocketChat.implementacaoRCRest.ConfigCoreRCTestesRegraNegocio;
-import testes.geradorCodigo.GeradorApiIntegracaoRest;
-import testes.geradorCodigo.GeradorGestaoTokenAcessoIntegracaoRest;
-import testes.geradorCodigo.GeradorImplementacaoIntegracaoRest;
-import testes.geradorCodigo.GeradorImplementacaoIntegracaoRestHeaderPadrao;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.InfoCampos.ItensGenericos.basico.UsuarioAplicacaoEmExecucao;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.MapaObjetosProjetoAtual;
 import org.junit.Assert;
 import org.junit.Test;
+import testes.testesSupers.TestesApiRest;
 
 /**
  *

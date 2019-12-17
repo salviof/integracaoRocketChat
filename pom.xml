@@ -35,7 +35,7 @@
 
         <dependency>
             <groupId>br.org.coletivoJava.fw</groupId>
-            <artifactId>SBClientRestTestes</artifactId>
+            <artifactId>SBRestClientTestes</artifactId>
             <version>1.0.0-RC-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
@@ -54,7 +54,7 @@
             <scope>test</scope>
         </dependency>
 
-      
+
 
         <dependency>
             <groupId>com.google.oauth-client</groupId>
