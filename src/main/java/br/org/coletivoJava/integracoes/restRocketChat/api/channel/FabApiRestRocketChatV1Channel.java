@@ -3,15 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.super_bits.modulosSB.SBCore.integracao.rocketChat.api.channel;
+package br.org.coletivoJava.integracoes.restRocketChat.api.channel;
 
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.ItfFabricaIntegracaoRest;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.conexaoWebServiceClient.FabTipoConexaoRest;
-import com.super_bits.modulosSB.SBCore.integracao.rocketChat.api.FabConfigRocketChat;
+import br.org.coletivoJava.integracoes.restRocketChat.api.FabConfigRocketChat;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.conexaoWebServiceClient.InfoConsumoRestService;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.ItfApiServicoTokenCliente;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.servicoRegistrado.FabTipoAutenticacaoRest;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.servicoRegistrado.InfoConfigRestClientIntegracao;
+import com.super_bits.modulosSB.SBCore.modulos.ManipulaArquivo.importacao.FabTipoArquivoImportacao;
 
 /**
  *
@@ -30,6 +31,7 @@ public enum FabApiRestRocketChatV1Channel implements ItfFabricaIntegracaoRest {
     GRUPO_LISTAR,
     @InfoConsumoRestService(getPachServico = "/api/v1/groups.create",
             tipoConexao = FabTipoConexaoRest.POST,
+            tipoInformacaoEnviada = FabTipoArquivoImportacao.JSON,
             urlDocumentacao = "https://rocket.chat/docs/developer-guides/rest-api/groups/create/"
     )
     GRUPO_NOVO,

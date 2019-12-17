@@ -5,15 +5,17 @@
  */
 package com.super_bits.modulosSB.SBCore.integracao.rocketChat.api.channel;
 
+import testes.testesSupers.TestesApiRest;
+import br.org.coletivoJava.integracoes.restRocketChat.api.channel.FabApiRestRocketChatV1Channel;
 import com.super_bits.modulos.SBAcessosModel.model.UsuarioSB;
 import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.conexaoWebServiceClient.RespostaWebServiceSimples;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.token.ItfTokenGestao;
 import com.super_bits.modulosSB.SBCore.integracao.rocketChat.implementacaoRCRest.ConfigCoreRCTestesRegraNegocio;
-import com.super_bits.modulosSB.SBCore.integracao.testes.geradorCodigo.GeradorApiIntegracaoRest;
-import com.super_bits.modulosSB.SBCore.integracao.testes.geradorCodigo.GeradorGestaoTokenAcessoIntegracaoRest;
-import com.super_bits.modulosSB.SBCore.integracao.testes.geradorCodigo.GeradorImplementacaoIntegracaoRest;
-import com.super_bits.modulosSB.SBCore.integracao.testes.geradorCodigo.GeradorImplementacaoIntegracaoRestHeaderPadrao;
+import testes.geradorCodigo.GeradorApiIntegracaoRest;
+import testes.geradorCodigo.GeradorGestaoTokenAcessoIntegracaoRest;
+import testes.geradorCodigo.GeradorImplementacaoIntegracaoRest;
+import testes.geradorCodigo.GeradorImplementacaoIntegracaoRestHeaderPadrao;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.InfoCampos.ItensGenericos.basico.UsuarioAplicacaoEmExecucao;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.MapaObjetosProjetoAtual;
 import org.junit.Assert;
@@ -23,7 +25,7 @@ import org.junit.Test;
  *
  * @author sfurbino
  */
-public class FabApiRestRocketChatV1ChannelTest {
+public class FabApiRestRocketChatV1ChannelTest extends TestesApiRest {
 
     public FabApiRestRocketChatV1ChannelTest() {
     }
@@ -33,17 +35,18 @@ public class FabApiRestRocketChatV1ChannelTest {
      */
     @Test
     public void testValues() {
+
         SBCore.configurar(new ConfigCoreRCTestesRegraNegocio(), SBCore.ESTADO_APP.DESENVOLVIMENTO);
-        GeradorApiIntegracaoRest gerador = new GeradorApiIntegracaoRest(FabApiRestRocketChatV1Channel.GRUPO_LISTAR);
-        gerador.salvarEmDiretorioPadraoSubstituindoAnterior();
 
-        GeradorImplementacaoIntegracaoRest geradorImp = new GeradorImplementacaoIntegracaoRest(FabApiRestRocketChatV1Channel.GRUPO_LISTAR);
-        geradorImp.salvarEmDiretorioPadraCASO_NAO_EXISTA();
-        GeradorGestaoTokenAcessoIntegracaoRest geradorToken = new GeradorGestaoTokenAcessoIntegracaoRest(FabApiRestRocketChatV1Channel.GRUPO_LISTAR);
-        geradorToken.salvarEmDiretorioPadraCASO_NAO_EXISTA();
+        gerarCodigos(FabApiRestRocketChatV1Channel.class);
 
-        GeradorImplementacaoIntegracaoRestHeaderPadrao geradorheader = new GeradorImplementacaoIntegracaoRestHeaderPadrao(FabApiRestRocketChatV1Channel.GRUPO_LISTAR);
-        geradorheader.salvarEmDiretorioPadraCASO_NAO_EXISTA();
+        RespostaWebServiceSimples respExiteGrupo = FabApiRestRocketChatV1Channel.GRUPO_EXISTE_GRUPO.getAcao("canaltesteapi2").getResposta();
+        if (respExiteGrupo.isSucesso()) {
+            System.out.println("Sucesso! o grupo foi encontrado");
+        } else {
+            RespostaWebServiceSimples respcriacaoDoGrupo = FabApiRestRocketChatV1Channel.GRUPO_NOVO.getAcao("grupoTeste").getResposta();
+            Assert.assertTrue("impossível criar o grupo", respcriacaoDoGrupo.isSucesso());
+        }
 
         ItfTokenGestao token = FabApiRestRocketChatV1Channel.GRUPO_LISTAR.getGestaoToken();
         if (!token.isTemTokemAtivo()) {
@@ -60,6 +63,7 @@ public class FabApiRestRocketChatV1ChannelTest {
 
         RespostaWebServiceSimples resposta = FabApiRestRocketChatV1Channel.GRUPO_LISTAR.getAcao().getResposta();
         MapaObjetosProjetoAtual.adcionarObjeto(UsuarioAplicacaoEmExecucao.class);
+        System.out.println(resposta.getRetorno());
         UsuarioAplicacaoEmExecucao usuario = new UsuarioAplicacaoEmExecucao();
         UsuarioSB novoUsuairo = new UsuarioSB();
         novoUsuairo.setNome("Salvio");
@@ -68,8 +72,9 @@ public class FabApiRestRocketChatV1ChannelTest {
         System.out.println(usuario.getEmail());
 
         RespostaWebServiceSimples resp = FabApiRestRocketChatV1Channel.GRUPO_LISTAR.getAcao(novoUsuairo).getResposta();
-        System.out.println(resp.getRespostaTexto());
+
         Assert.assertTrue("A resposta não foi retornada com sucesso", resposta.isSucesso());
+
         System.out.println(resposta.getRespostaTexto());
     }
 

@@ -6,16 +6,15 @@ import com.super_bits.modulosSB.SBCore.integracao.libRestClient.implementacao.Ac
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.FabTipoAgenteClienteRest;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.Interfaces.basico.ItfUsuario;
 
-@InfoIntegracaoRestRocketChat(tipo = FabApiRestRocketChatV1Channel.GRUPO_LISTAR)
-public class IntegracaoRestRocketChatGrupoListar
-        extends
-        AcaoApiIntegracaoAbstrato {
+@InfoIntegracaoRestRocketChat(tipo = FabApiRestRocketChatV1Channel.GRUPO_ADICIONAR_USUARIO)
+public class IntegracaoRestRocketChatGrupoAdicionarUsuario
+		extends
+			AcaoApiIntegracaoAbstrato {
 
-    public IntegracaoRestRocketChatGrupoListar(
-            final FabTipoAgenteClienteRest pTipoAgente,
-            final ItfUsuario pUsuario, final java.lang.Object... pParametro) {
-        super(FabApiRestRocketChatV1Channel.GRUPO_LISTAR, pTipoAgente,
-                pUsuario, pParametro);
-    }
-
+	public IntegracaoRestRocketChatGrupoAdicionarUsuario(
+			final FabTipoAgenteClienteRest pTipoAgente,
+			final ItfUsuario pUsuario, final java.lang.Object... pParametro) {
+		super(FabApiRestRocketChatV1Channel.GRUPO_ADICIONAR_USUARIO,
+				pTipoAgente, pUsuario, pParametro);
+	}
 }
