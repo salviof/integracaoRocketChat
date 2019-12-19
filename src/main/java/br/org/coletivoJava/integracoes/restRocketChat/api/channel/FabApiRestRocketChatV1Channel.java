@@ -53,9 +53,4 @@ public enum FabApiRestRocketChatV1Channel implements ItfFabricaIntegracaoRest {
             urlDocumentacao = "https://rocket.chat/docs/developer-guides/rest-api/groups/delete/")
     GRUPO_EXCLUIR_GRUPO;
 
-    @Override
-    public ItfApiServicoTokenCliente getApiTokenAcesso() {
-        throw new UnsupportedOperationException("O METODO AINDA N\u00c3O FOI IMPLEMENTADO.");
-    }
-
 }
