@@ -1,7 +1,6 @@
 package br.org.coletivoJava.integracoes.restRocketChat.implementacao;
 
-import br.org.coletivoJava.integracoes.restRocketChat.api.InfoIntegracaoRestRocketChat;
-import com.google.gson.JsonArray;
+import br.org.coletivoJava.integracoes.restRocketChat.api.InfoIntegracaoRestRocketChatChannel;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.conexaoWebServiceClient.ConsumoWSExecucao;
 import br.org.coletivoJava.integracoes.restRocketChat.api.channel.FabApiRestRocketChatV1Channel;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.implementacao.AcaoApiIntegracaoAbstrato;
@@ -11,7 +10,7 @@ import java.util.Optional;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-@InfoIntegracaoRestRocketChat(tipo = FabApiRestRocketChatV1Channel.GRUPO_EXISTE_GRUPO)
+@InfoIntegracaoRestRocketChatChannel(tipo = FabApiRestRocketChatV1Channel.GRUPO_EXISTE_GRUPO)
 public class IntegracaoRestRocketChatGrupoExisteGrupo
         extends
         AcaoApiIntegracaoAbstrato {

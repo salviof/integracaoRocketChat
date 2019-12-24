@@ -12,7 +12,7 @@ import java.lang.annotation.ElementType;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface InfoIntegracaoRestRocketChat {
+public @interface InfoIntegracaoRestRocketChatChannel {
 
 	FabApiRestRocketChatV1Channel tipo();
 }

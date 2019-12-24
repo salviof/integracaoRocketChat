@@ -6,6 +6,7 @@
 package com.super_bits.modulosSB.SBCore.integracao.rocketChat.api.channel;
 
 import br.org.coletivoJava.integracoes.restRocketChat.api.channel.FabApiRestRocketChatV1Channel;
+import br.org.coletivoJava.integracoes.restRocketChat.implementacao.GestaoTokenRestRocketChat;
 import com.super_bits.modulos.SBAcessosModel.model.UsuarioSB;
 import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.conexaoWebServiceClient.RespostaWebServiceSimples;
@@ -35,12 +36,19 @@ public class FabApiRestRocketChatV1ChannelTest extends TestesApiRest {
         SBCore.configurar(new ConfigCoreRCTestesRegraNegocio(), SBCore.ESTADO_APP.DESENVOLVIMENTO);
 
         gerarCodigos(FabApiRestRocketChatV1Channel.class);
+        RespostaWebServiceSimples resp2 = FabApiRestRocketChatV1Channel.QUEM_SOU_EU.getAcao().getResposta();
+        GestaoTokenRestRocketChat autenticacaouser = (GestaoTokenRestRocketChat) FabApiRestRocketChatV1Channel.QUEM_SOU_EU.getGestaoToken(SBCore.getUsuarioLogado());
+        autenticacaouser.setLoginNomeUsuario("salviof@gmail.com");
+        autenticacaouser.setLoginSenhaUsuario("123321");
+        autenticacaouser.gerarNovoToken();
 
-        RespostaWebServiceSimples respExiteGrupo = FabApiRestRocketChatV1Channel.GRUPO_EXISTE_GRUPO.getAcao("canaltesteapi2").getResposta();
+        RespostaWebServiceSimples resp3 = FabApiRestRocketChatV1Channel.QUEM_SOU_EU.getAcao(SBCore.getUsuarioLogado()).getResposta();
+
+        RespostaWebServiceSimples respExiteGrupo = FabApiRestRocketChatV1Channel.GRUPO_EXISTE_GRUPO.getAcao("canaltesteapi3").getResposta();
         if (respExiteGrupo.isSucesso()) {
             System.out.println("Sucesso! o grupo foi encontrado");
         } else {
-            RespostaWebServiceSimples respcriacaoDoGrupo = FabApiRestRocketChatV1Channel.GRUPO_NOVO.getAcao("grupoTeste").getResposta();
+            RespostaWebServiceSimples respcriacaoDoGrupo = FabApiRestRocketChatV1Channel.GRUPO_NOVO.getAcao("canaltesteapi2").getResposta();
             Assert.assertTrue("impossível criar o grupo", respcriacaoDoGrupo.isSucesso());
         }
 

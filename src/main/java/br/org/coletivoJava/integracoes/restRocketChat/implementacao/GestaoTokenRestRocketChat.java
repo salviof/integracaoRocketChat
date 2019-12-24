@@ -1,6 +1,5 @@
 package br.org.coletivoJava.integracoes.restRocketChat.implementacao;
 
-import br.org.coletivoJava.integracoes.restRocketChat.api.InfoIntegracaoRestRocketChat;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.conexaoWebServiceClient.FabTipoConexaoRest;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.conexaoWebServiceClient.RespostaWebServiceSimples;
 import br.org.coletivoJava.integracoes.restRocketChat.api.channel.FabApiRestRocketChatV1Channel;
@@ -12,8 +11,10 @@ import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.Interfaces.basic
 import java.util.HashMap;
 import org.json.simple.JSONObject;
 
-@InfoIntegracaoRestRocketChat(tipo = FabApiRestRocketChatV1Channel.GRUPO_LISTAR)
 public class GestaoTokenRestRocketChat extends GestaoTokenChaveUnica {
+
+    private String loginNomeUsuario;
+    private String loginSenhaUsuario;
 
     @Override
     public String gerarNovoToken() {
@@ -22,12 +23,12 @@ public class GestaoTokenRestRocketChat extends GestaoTokenChaveUnica {
         String senhaSistema = null;
 
         JSONObject ultimoRetornoToken = loadTokenArmazenadoComoJsonObject();
-        String token = null;
+
         if (ultimoRetornoToken == null) {
             switch (getTipoAgente()) {
                 case USUARIO:
-                    usuarioSistema = usuario.getNome();
-                    senhaSistema = usuario.getSenha();
+                    usuarioSistema = loginNomeUsuario;
+                    senhaSistema = loginSenhaUsuario;
                     break;
                 case SISTEMA:
                     usuarioSistema = getConfig().getPropriedade(FabConfigRocketChat.USUARIO_ASSISTENTE_DE_CANAIS);
@@ -40,12 +41,22 @@ public class GestaoTokenRestRocketChat extends GestaoTokenChaveUnica {
             RespostaWebServiceSimples resposta = UtilSBApiRestClient.getRespostaRest(url, FabTipoConexaoRest.POST, true,
                     new HashMap<>(), "user=" + usuarioSistema + "&password=" + senhaSistema);
             ultimoRetornoToken = resposta.getRespostaComoObjetoJson();
-            ((JSONObject) ultimoRetornoToken.get("data")).get("authToken").toString();
-            armazenarRespostaToken(resposta.getResposta());
-        }
-        token = ((JSONObject) ultimoRetornoToken.get("data")).get("authToken").toString();
-        return token;
 
+            armazenarRespostaToken(resposta.getResposta());
+
+        }
+
+        return extrairToken(ultimoRetornoToken);
+
+    }
+
+    @Override
+    public String extrairToken(JSONObject pJson) {
+        try {
+            return ((JSONObject) pJson.get("data")).get("authToken").toString();
+        } catch (Throwable t) {
+            return null;
+        }
     }
 
     public GestaoTokenRestRocketChat(
@@ -56,7 +67,48 @@ public class GestaoTokenRestRocketChat extends GestaoTokenChaveUnica {
 
     @Override
     public boolean validarToken() {
+        switch (tipoAgente) {
+            case USUARIO:
+                RespostaWebServiceSimples resp = FabApiRestRocketChatV1Channel.QUEM_SOU_EU.getAcao(usuario).getResposta();
+                if (!resp.isSucesso()) {
+                    return false;
+                }
+                break;
+            case SISTEMA:
+                RespostaWebServiceSimples resp2 = FabApiRestRocketChatV1Channel.QUEM_SOU_EU.getAcao().getResposta();
+                if (!resp2.isSucesso()) {
+                    return false;
+                }
+                break;
+            default:
+                throw new AssertionError(tipoAgente.name());
+
+        }
         return isTemTokemAtivo();
+    }
+
+    public String getLoginNomeUsuario() {
+        return loginNomeUsuario;
+    }
+
+    public void setLoginNomeUsuario(String loginNomeUsuario) {
+        this.loginNomeUsuario = loginNomeUsuario;
+    }
+
+    public String getLoginSenhaUsuario() {
+        return loginSenhaUsuario;
+    }
+
+    public void setLoginSenhaUsuario(String LoginSenhaUsuario) {
+        this.loginSenhaUsuario = LoginSenhaUsuario;
+    }
+
+    public static GestaoTokenRestRocketChat getInstancia(ItfUsuario pUsuario) {
+        return (GestaoTokenRestRocketChat) FabApiRestRocketChatV1Channel.GRUPO_ADICIONAR_USUARIO.getGestaoToken(pUsuario);
+    }
+
+    public static GestaoTokenRestRocketChat getInstancia() {
+        return (GestaoTokenRestRocketChat) FabApiRestRocketChatV1Channel.GRUPO_ADICIONAR_USUARIO.getGestaoToken();
     }
 
 }

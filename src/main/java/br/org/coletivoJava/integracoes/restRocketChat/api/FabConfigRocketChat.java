@@ -22,7 +22,8 @@ public enum FabConfigRocketChat implements ItfFabConfigModulo {
     @InfoPropriedadeConfigRestIntegracao(tipoPropriedade = FabPropriedadeModuloIntegracaoOauth.USUARIO)
     USUARIO_ASSISTENTE_DE_CANAIS,
     @InfoPropriedadeConfigRestIntegracao(tipoPropriedade = FabPropriedadeModuloIntegracaoOauth.SENHA)
-    SENHA_ASSISTENTE_DE_CANAIS;
+    SENHA_ASSISTENTE_DE_CANAIS,
+    SUPERVISOR_PADRAO;
 
     public static final String NOME_APLICACAO = "Rocket Chat";
 
@@ -36,6 +37,8 @@ public enum FabConfigRocketChat implements ItfFabConfigModulo {
                 return "nomeUsuarioRC@ouEmail.com";
             case SENHA_ASSISTENTE_DE_CANAIS:
                 return "minhasenhasecretaquenaocontoparaninguemcontendoaté@e123";
+            case SUPERVISOR_PADRAO:
+                return "camila@casanovadigital.com.br";
 
             default:
                 throw new AssertionError(this.name());

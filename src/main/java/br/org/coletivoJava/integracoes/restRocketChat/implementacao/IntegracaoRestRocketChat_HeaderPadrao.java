@@ -15,9 +15,11 @@ public class IntegracaoRestRocketChat_HeaderPadrao
     @Override
     public void buildHeaderPadrao() {
         super.buildHeaderPadrao(); //chamada super do metodo (implementação classe pai)
-        String userid = ((JSONObject) acao.getTokenGestao().loadTokenArmazenadoComoJsonObject().get("data")).get("userId").toString();
-        cabecalho.put("X-User-Id", userid);
-        cabecalho.put("X-Auth-Token", acao.getTokenGestao().getToken());
+        if (acao.getTokenGestao().isTemTokemAtivo()) {
+            String userid = ((JSONObject) acao.getTokenGestao().loadTokenArmazenadoComoJsonObject().get("data")).get("userId").toString();
+            cabecalho.put("X-User-Id", userid);
+            cabecalho.put("X-Auth-Token", acao.getTokenGestao().getToken());
+        }
     }
 
 }

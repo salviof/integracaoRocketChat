@@ -9,7 +9,6 @@ import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.ItfFabricaInt
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.conexaoWebServiceClient.FabTipoConexaoRest;
 import br.org.coletivoJava.integracoes.restRocketChat.api.FabConfigRocketChat;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.conexaoWebServiceClient.InfoConsumoRestService;
-import com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.ItfApiServicoTokenCliente;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.servicoRegistrado.FabTipoAutenticacaoRest;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.servicoRegistrado.InfoConfigRestClientIntegracao;
 import com.super_bits.modulosSB.SBCore.modulos.ManipulaArquivo.importacao.FabTipoArquivoImportacao;
@@ -45,12 +44,17 @@ public enum FabApiRestRocketChatV1Channel implements ItfFabricaIntegracaoRest {
      *
      */
     @InfoConsumoRestService(getPachServico = "/api/v1/groups.invite",
-            tipoConexao = FabTipoConexaoRest.POST,
+            tipoConexao = FabTipoConexaoRest.POST, tipoInformacaoEnviada = FabTipoArquivoImportacao.JSON,
+            tipoInformacaoRecebida = FabTipoArquivoImportacao.JSON,
             urlDocumentacao = "https://rocket.chat/docs/developer-guides/rest-api/groups/invite/ ")
     GRUPO_ADICIONAR_USUARIO,
     @InfoConsumoRestService(getPachServico = "/api/v1/groups.delete",
             tipoConexao = FabTipoConexaoRest.POST,
             urlDocumentacao = "https://rocket.chat/docs/developer-guides/rest-api/groups/delete/")
-    GRUPO_EXCLUIR_GRUPO;
+    GRUPO_EXCLUIR_GRUPO,
+    @InfoConsumoRestService(getPachServico = "/api/v1/me",
+            tipoConexao = FabTipoConexaoRest.GET,
+            urlDocumentacao = "https://rocket.chat/docs/developer-guides/rest-api/authentication/me/")
+    QUEM_SOU_EU;
 
 }
