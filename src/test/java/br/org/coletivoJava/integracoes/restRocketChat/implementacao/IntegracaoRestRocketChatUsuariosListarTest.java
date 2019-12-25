@@ -31,9 +31,11 @@ public class IntegracaoRestRocketChatUsuariosListarTest {
         JSONObject dados = resp.getRespostaComoObjetoJson();
         JSONArray usuarios = (JSONArray) dados.get("users");
         usuarios.stream().forEach(usr -> {
+
             JSONObject usuario = (JSONObject) usr;
             JSONArray emails = (JSONArray) usuario.get("emails");
-
+            String id = usuario.get("_id").toString();
+            String nome = usuario.get("username").toString();
         });
 
     }

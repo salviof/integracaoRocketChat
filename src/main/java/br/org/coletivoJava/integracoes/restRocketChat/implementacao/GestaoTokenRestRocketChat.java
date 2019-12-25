@@ -15,6 +15,7 @@ public class GestaoTokenRestRocketChat extends GestaoTokenChaveUnica {
 
     private String loginNomeUsuario;
     private String loginSenhaUsuario;
+    private String codigoUsuarioRocketChat;
 
     @Override
     public String gerarNovoToken() {
@@ -38,12 +39,13 @@ public class GestaoTokenRestRocketChat extends GestaoTokenChaveUnica {
                     throw new AssertionError(getTipoAgente().name());
 
             }
-            RespostaWebServiceSimples resposta = UtilSBApiRestClient.getRespostaRest(url, FabTipoConexaoRest.POST, true,
-                    new HashMap<>(), "user=" + usuarioSistema + "&password=" + senhaSistema);
-            ultimoRetornoToken = resposta.getRespostaComoObjetoJson();
+            if (usuarioSistema != null) {
+                RespostaWebServiceSimples resposta = UtilSBApiRestClient.getRespostaRest(url, FabTipoConexaoRest.POST, true,
+                        new HashMap<>(), "user=" + usuarioSistema + "&password=" + senhaSistema);
+                ultimoRetornoToken = resposta.getRespostaComoObjetoJson();
 
-            armazenarRespostaToken(resposta.getResposta());
-
+                armazenarRespostaToken(resposta.getResposta());
+            }
         }
 
         return extrairToken(ultimoRetornoToken);
@@ -53,6 +55,7 @@ public class GestaoTokenRestRocketChat extends GestaoTokenChaveUnica {
     @Override
     public String extrairToken(JSONObject pJson) {
         try {
+            codigoUsuarioRocketChat = ((JSONObject) pJson.get("data")).get("userId").toString();
             return ((JSONObject) pJson.get("data")).get("authToken").toString();
         } catch (Throwable t) {
             return null;
@@ -109,6 +112,10 @@ public class GestaoTokenRestRocketChat extends GestaoTokenChaveUnica {
 
     public static GestaoTokenRestRocketChat getInstancia() {
         return (GestaoTokenRestRocketChat) FabApiRestRocketChatV1Channel.GRUPO_ADICIONAR_USUARIO.getGestaoToken();
+    }
+
+    public String getCodigoUsuarioRocketChat() {
+        return codigoUsuarioRocketChat;
     }
 
 }
