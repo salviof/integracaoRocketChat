@@ -35,6 +35,8 @@ public class FabApiRestRocketChatV1ChannelTest extends TestesApiRest {
 
         SBCore.configurar(new ConfigCoreRCTestesRegraNegocio(), SBCore.ESTADO_APP.DESENVOLVIMENTO);
 
+        GestaoTokenRestRocketChat autenticacaoSistema = (GestaoTokenRestRocketChat) FabApiRestRocketChatV1Channel.QUEM_SOU_EU.getGestaoToken();
+        String tokenSystem = autenticacaoSistema.gerarNovoToken();
         gerarCodigos(FabApiRestRocketChatV1Channel.class);
         RespostaWebServiceSimples resp2 = FabApiRestRocketChatV1Channel.QUEM_SOU_EU.getAcao().getResposta();
         GestaoTokenRestRocketChat autenticacaouser = (GestaoTokenRestRocketChat) FabApiRestRocketChatV1Channel.QUEM_SOU_EU.getGestaoToken(SBCore.getUsuarioLogado());
