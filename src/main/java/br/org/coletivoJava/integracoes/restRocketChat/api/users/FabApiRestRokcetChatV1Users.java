@@ -26,6 +26,20 @@ public enum FabApiRestRokcetChatV1Users implements ItfFabricaIntegracaoRest {
     @InfoConsumoRestService(getPachServico = "/api/v1/users.list",
             tipoConexao = FabTipoConexaoRest.GET,
             urlDocumentacao = "https://rocket.chat/docs/developer-guides/rest-api/users/list/")
-    USUARIOS_LISTAR;
+    USUARIOS_LISTAR,
+    /**
+     * Aquardando este
+     * requisito:https://github.com/RocketChat/Rocket.Chat/pull/13634
+     */
+    @InfoConsumoRestService(getPachServico = "/api/v1/im.counters",
+            tipoConexao = FabTipoConexaoRest.GET,
+            parametrosGet = {"username"},
+            urlDocumentacao = "https://rocket.chat/docs/developer-guides/rest-api/authentication/me/")
+    DIRECT_MENSAGENS_CONTADORES,
+    @InfoConsumoRestService(getPachServico = "/api/v1/subscriptions.get",
+            tipoConexao = FabTipoConexaoRest.GET,
+            parametrosGet = {"username"},
+            urlDocumentacao = "https://rocket.chat/docs/developer-guides/rest-api/authentication/me/")
+    ASSINATURAS_LISTAR,
 
 }

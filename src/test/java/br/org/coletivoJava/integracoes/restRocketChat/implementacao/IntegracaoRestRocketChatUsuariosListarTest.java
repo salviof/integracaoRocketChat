@@ -27,7 +27,7 @@ public class IntegracaoRestRocketChatUsuariosListarTest {
     public void testSomeMethod() {
         // TODO review the generated test code and remove the default call to fail.
         SBCore.configurar(new ConfigCoreRCTestesRegraNegocio(), SBCore.ESTADO_APP.DESENVOLVIMENTO);
-
+//RespostaWebServiceSimples resp = FabApiRestRokcetChatV1Users.USUARIOS_LISTAR.getAcao().getResposta();
         RespostaWebServiceSimples resp = FabApiRestRokcetChatV1Users.USUARIOS_LISTAR.getAcao().getResposta();
         JSONObject dados = resp.getRespostaComoObjetoJson();
         JSONArray usuarios = (JSONArray) dados.get("users");

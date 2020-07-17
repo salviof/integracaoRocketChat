@@ -34,6 +34,10 @@ public enum FabApiRestRocketChatV1Channel implements ItfFabricaIntegracaoRest {
             urlDocumentacao = "https://rocket.chat/docs/developer-guides/rest-api/groups/create/"
     )
     GRUPO_NOVO,
+    /**
+     * Atualmente suporta apenas pesquisas em canais vinculados a um ID, exemplo
+     * nomeCanal-123 -> 123 representa o id
+     */
     @InfoConsumoRestService(getPachServico = "/api/v1/groups.listAll",
             tipoConexao = FabTipoConexaoRest.GET,
             urlDocumentacao = "https://rocket.chat/docs/developer-guides/rest-api/groups/list/ ")
