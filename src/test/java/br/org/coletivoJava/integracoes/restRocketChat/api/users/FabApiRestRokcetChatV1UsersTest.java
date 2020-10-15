@@ -8,6 +8,7 @@ package br.org.coletivoJava.integracoes.restRocketChat.api.users;
 import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.conexaoWebServiceClient.RespostaWebServiceSimples;
 import com.super_bits.modulosSB.SBCore.integracao.rocketChat.implementacaoRCRest.ConfigCoreRCTestesRegraNegocio;
+
 import org.junit.Test;
 import testes.testesSupers.TestesApiRest;
 
@@ -29,6 +30,7 @@ public class FabApiRestRokcetChatV1UsersTest extends TestesApiRest {
         gerarCodigos(FabApiRestRokcetChatV1Users.class);
         RespostaWebServiceSimples resposta = FabApiRestRokcetChatV1Users.DIRECT_MENSAGENS_CONTADORES.getAcao().getResposta();
         System.out.println(resposta);
+        System.out.println(resposta.getRespostaTexto());
     }
 
 }
