@@ -24,6 +24,11 @@ public class GestaoTokenRestRocketChat extends GestaoTokenChaveUnica {
         String senhaSistema = null;
 
         JSONObject ultimoRetornoToken = loadTokenArmazenadoComoJsonObject();
+        if (ultimoRetornoToken != null) {
+            if (!validarToken()) {
+                ultimoRetornoToken = null;
+            }
+        }
 
         if (ultimoRetornoToken == null) {
             switch (getTipoAgente()) {

@@ -65,6 +65,12 @@ public enum FabApiRestRocketChatV1Channel implements ItfFabricaIntegracaoRest {
             tipoInformacaoRecebida = FabTipoArquivoImportacao.JSON,
             parametrosPost = {"roomId", "userId"},
             urlDocumentacao = "https://rocket.chat/docs/developer-guides/rest-api/groups/invite/ ")
-    GRUPO_ADICIONAR_DONO_GRUPO;
+    GRUPO_ADICIONAR_DONO_GRUPO,
+    @InfoConsumoRestService(getPachServico = "/api/v1/chat.postMessage",
+            tipoConexao = FabTipoConexaoRest.POST, tipoInformacaoEnviada = FabTipoArquivoImportacao.JSON,
+            tipoInformacaoRecebida = FabTipoArquivoImportacao.JSON,
+            parametrosPost = {"channel", "text"},
+            urlDocumentacao = "https://docs.rocket.chat/api/rest-api/methods/chat/sendmessage")
+    ENVIAR_MENSAGEM;
 
 }
