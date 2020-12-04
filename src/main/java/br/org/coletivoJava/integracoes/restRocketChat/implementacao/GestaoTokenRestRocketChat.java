@@ -4,68 +4,20 @@ import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.conexaoWebSer
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.conexaoWebServiceClient.RespostaWebServiceSimples;
 import br.org.coletivoJava.integracoes.restRocketChat.api.channel.FabApiRestRocketChatV1Channel;
 import br.org.coletivoJava.integracoes.restRocketChat.api.FabConfigRocketChat;
-import com.super_bits.modulosSB.SBCore.integracao.libRestClient.implementacao.gestaoToken.GestaoTokenChaveUnica;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.FabTipoAgenteClienteRest;
+import com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.token.ItfTokenDeAcessoExterno;
+import com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.token.TokenDeAcessoExternoSimples;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.implementacao.UtilSBApiRestClient;
+import com.super_bits.modulosSB.SBCore.integracao.libRestClient.implementacao.gestaoToken.GestaoTokenDinamico;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.Interfaces.basico.ItfUsuario;
 import java.util.HashMap;
 import org.json.simple.JSONObject;
 
-public class GestaoTokenRestRocketChat extends GestaoTokenChaveUnica {
+public class GestaoTokenRestRocketChat extends GestaoTokenDinamico {
 
     private String loginNomeUsuario;
     private String loginSenhaUsuario;
     private String codigoUsuarioRocketChat;
-
-    @Override
-    public String gerarNovoToken() {
-        String url = getConfig().getPropriedade(FabConfigRocketChat.URL_SERVIDOR_ROCKET_CHAT) + "/api/v1/login";
-        String usuarioSistema = null;
-        String senhaSistema = null;
-
-        JSONObject ultimoRetornoToken = loadTokenArmazenadoComoJsonObject();
-        if (ultimoRetornoToken != null) {
-            if (!validarToken()) {
-                ultimoRetornoToken = null;
-            }
-        }
-
-        if (ultimoRetornoToken == null) {
-            switch (getTipoAgente()) {
-                case USUARIO:
-                    usuarioSistema = loginNomeUsuario;
-                    senhaSistema = loginSenhaUsuario;
-                    break;
-                case SISTEMA:
-                    usuarioSistema = getConfig().getPropriedade(FabConfigRocketChat.USUARIO_ASSISTENTE_DE_CANAIS);
-                    senhaSistema = getConfig().getPropriedade(FabConfigRocketChat.SENHA_ASSISTENTE_DE_CANAIS);
-                    break;
-                default:
-                    throw new AssertionError(getTipoAgente().name());
-
-            }
-            if (usuarioSistema != null) {
-                RespostaWebServiceSimples resposta = UtilSBApiRestClient.getRespostaRest(url, FabTipoConexaoRest.POST, true,
-                        new HashMap<>(), "user=" + usuarioSistema + "&password=" + senhaSistema);
-                ultimoRetornoToken = resposta.getRespostaComoObjetoJson();
-
-                armazenarRespostaToken(resposta.getResposta());
-            }
-        }
-
-        return extrairToken(ultimoRetornoToken);
-
-    }
-
-    @Override
-    public String extrairToken(JSONObject pJson) {
-        try {
-            codigoUsuarioRocketChat = ((JSONObject) pJson.get("data")).get("userId").toString();
-            return ((JSONObject) pJson.get("data")).get("authToken").toString();
-        } catch (Throwable t) {
-            return null;
-        }
-    }
 
     public GestaoTokenRestRocketChat(
             final FabTipoAgenteClienteRest pTipoAgente,
@@ -74,25 +26,64 @@ public class GestaoTokenRestRocketChat extends GestaoTokenChaveUnica {
     }
 
     @Override
+    public ItfTokenDeAcessoExterno gerarNovoToken() {
+        String url = getConfig().getPropriedade(FabConfigRocketChat.URL_SERVIDOR_ROCKET_CHAT) + "/api/v1/login";
+
+        if (validarToken()) {
+
+            return loadTokenArmazenado();
+        }
+        String usuarioLogin = null;
+        String senhaLogin = null;
+
+        switch (getTipoAgente()) {
+            case USUARIO:
+                usuarioLogin = loginNomeUsuario;
+                senhaLogin = loginSenhaUsuario;
+                break;
+            case SISTEMA:
+                usuarioLogin = getConfig().getPropriedade(FabConfigRocketChat.USUARIO_ASSISTENTE_DE_CANAIS);
+                senhaLogin = getConfig().getPropriedade(FabConfigRocketChat.SENHA_ASSISTENTE_DE_CANAIS);
+                break;
+            default:
+                throw new AssertionError(getTipoAgente().name());
+
+        }
+        if (usuarioLogin != null) {
+            RespostaWebServiceSimples resposta = UtilSBApiRestClient.getRespostaRest(url, FabTipoConexaoRest.POST, true,
+                    new HashMap<>(), "user=" + usuarioLogin + "&password=" + senhaLogin);
+
+            armazenarRespostaToken(resposta.getResposta());
+        }
+        return loadTokenArmazenado();
+
+    }
+
+    @Override
+    public ItfTokenDeAcessoExterno extrairToken(JSONObject pJson) {
+        try {
+            codigoUsuarioRocketChat = ((JSONObject) pJson.get("data")).get("userId").toString();
+            String token = ((JSONObject) pJson.get("data")).get("authToken").toString();
+            return new TokenDeAcessoExternoSimples(token);
+        } catch (Throwable t) {
+            return null;
+        }
+    }
+
+    @Override
     public boolean validarToken() {
         switch (tipoAgente) {
             case USUARIO:
                 RespostaWebServiceSimples resp = FabApiRestRocketChatV1Channel.QUEM_SOU_EU.getAcao(usuario).getResposta();
-                if (!resp.isSucesso()) {
-                    return false;
-                }
-                break;
+                return resp.isSucesso();
             case SISTEMA:
                 RespostaWebServiceSimples resp2 = FabApiRestRocketChatV1Channel.QUEM_SOU_EU.getAcao().getResposta();
-                if (!resp2.isSucesso()) {
-                    return false;
-                }
-                break;
+                return resp2.isSucesso();
+
             default:
                 throw new AssertionError(tipoAgente.name());
 
         }
-        return isTemTokemAtivo();
     }
 
     public String getLoginNomeUsuario() {
@@ -121,6 +112,11 @@ public class GestaoTokenRestRocketChat extends GestaoTokenChaveUnica {
 
     public String getCodigoUsuarioRocketChat() {
         return codigoUsuarioRocketChat;
+    }
+
+    @Override
+    public boolean isTemTokemAtivo() {
+        return super.isTemTokemAtivo(); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

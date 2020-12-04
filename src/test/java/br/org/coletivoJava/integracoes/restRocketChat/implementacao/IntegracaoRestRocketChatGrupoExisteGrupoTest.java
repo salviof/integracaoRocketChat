@@ -27,7 +27,7 @@ public class IntegracaoRestRocketChatGrupoExisteGrupoTest {
 
         SBCore.configurar(new ConfigCoreRCTestesRegraNegocio(), SBCore.ESTADO_APP.DESENVOLVIMENTO);
         GestaoTokenRestRocketChat autenticacaoSistema = (GestaoTokenRestRocketChat) FabApiRestRocketChatV1Channel.QUEM_SOU_EU.getGestaoToken();
-        String tokenSystem = autenticacaoSistema.gerarNovoToken();
+        autenticacaoSistema.gerarNovoToken();
         IntegracaoRestRocketChatGrupoExisteGrupo teste;
         RespostaWebServiceSimples respGrupo = FabApiRestRocketChatV1Channel.GRUPO_EXISTE_GRUPO.getAcao("EmpresaXQueVaiFecharContradoNomeDaEmpresa_Vendas_1").getResposta();
         System.out.println(respGrupo.isSucesso());

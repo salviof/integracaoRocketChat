@@ -20,6 +20,11 @@ public class IntegracaoRestRocketChatQuemSouEu
     }
 
     @Override
+    protected void executarAcao() {
+        super.executarAcao(); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
     public void gerarResposta(ConsumoWSExecucao pConsumoRest) {
         super.gerarResposta(pConsumoRest);
         if (!resposta.isSucesso()) {

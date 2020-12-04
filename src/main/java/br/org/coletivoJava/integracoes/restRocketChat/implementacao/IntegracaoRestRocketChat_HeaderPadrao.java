@@ -16,7 +16,7 @@ public class IntegracaoRestRocketChat_HeaderPadrao
     public void buildHeaderPadrao() {
         //super.buildHeaderPadrao(); //chamada super do metodo (implementação classe pai)
         if (acao.getTokenGestao().isTemTokemAtivo()) {
-            String userid = ((JSONObject) acao.getTokenGestao().loadTokenArmazenadoComoJsonObject().get("data")).get("userId").toString();
+            String userid = ((JSONObject) acao.getTokenGestao().getComoTokenDinamico().loadTokenArmazenadoComoJsonObject().get("data")).get("userId").toString();
 
             cabecalho.put("X-User-Id", userid);
             cabecalho.put("X-Auth-Token", acao.getTokenGestao().getToken());
