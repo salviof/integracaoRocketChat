@@ -7,7 +7,7 @@ import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
 import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreStringFiltros;
 import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreStringsCammelCase;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.implementacao.AcaoApiIntegracaoAbstrato;
-import com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.FabTipoAgenteClienteRest;
+import com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.FabTipoAgenteClienteApi;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.Interfaces.basico.ItfBeanSimples;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.Interfaces.basico.ItfUsuario;
 import java.util.Optional;
@@ -20,7 +20,7 @@ public class IntegracaoRestRocketChatGrupoExisteGrupo
         AcaoApiIntegracaoAbstrato {
 
     public IntegracaoRestRocketChatGrupoExisteGrupo(
-            final FabTipoAgenteClienteRest pTipoAgente,
+            final FabTipoAgenteClienteApi pTipoAgente,
             final ItfUsuario pUsuario, final java.lang.Object... pParametro) {
         super(FabApiRestRocketChatV1Channel.GRUPO_EXISTE_GRUPO, pTipoAgente,
                 pUsuario, pParametro);
@@ -41,7 +41,7 @@ public class IntegracaoRestRocketChatGrupoExisteGrupo
             resposta.addErro("Nenhum parametro foi enviado");
         }
         if (resposta.isSucesso()) {
-            JSONObject resp = resposta.getJsonObj();
+            JSONObject resp = getResposta().getRespostaComoObjetoJson();
 
             String codigoGrupo = getLocalizarCodigoGrupoByNomeOuIdentiicadorUnicoImutavel(parametros[0].toString(), resp);
             if (codigoGrupo == null) {

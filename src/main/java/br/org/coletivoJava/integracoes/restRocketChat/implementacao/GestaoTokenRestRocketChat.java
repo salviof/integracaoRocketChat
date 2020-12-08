@@ -4,7 +4,8 @@ import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.conexaoWebSer
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.conexaoWebServiceClient.RespostaWebServiceSimples;
 import br.org.coletivoJava.integracoes.restRocketChat.api.channel.FabApiRestRocketChatV1Channel;
 import br.org.coletivoJava.integracoes.restRocketChat.api.FabConfigRocketChat;
-import com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.FabTipoAgenteClienteRest;
+import com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.FabTipoAgenteClienteApi;
+
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.token.ItfTokenDeAcessoExterno;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.token.TokenDeAcessoExternoSimples;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.implementacao.UtilSBApiRestClient;
@@ -20,7 +21,7 @@ public class GestaoTokenRestRocketChat extends GestaoTokenDinamico {
     private String codigoUsuarioRocketChat;
 
     public GestaoTokenRestRocketChat(
-            final FabTipoAgenteClienteRest pTipoAgente,
+            final FabTipoAgenteClienteApi pTipoAgente,
             final ItfUsuario pUsuario) {
         super(FabApiRestRocketChatV1Channel.class, pTipoAgente, pUsuario);
     }

@@ -4,7 +4,7 @@ import br.org.coletivoJava.integracoes.restRocketChat.api.InfoIntegracaoRestRock
 import br.org.coletivoJava.integracoes.restRocketChat.api.users.FabApiRestRokcetChatV1Users;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.conexaoWebServiceClient.ConsumoWSExecucao;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.implementacao.AcaoApiIntegracaoAbstrato;
-import com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.FabTipoAgenteClienteRest;
+import com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.FabTipoAgenteClienteApi;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.Interfaces.basico.ItfUsuario;
 import java.util.Iterator;
 import org.json.simple.JSONArray;
@@ -16,7 +16,7 @@ public class IntegracaoRestRocketChatAssinaturasListar
         AcaoApiIntegracaoAbstrato {
 
     public IntegracaoRestRocketChatAssinaturasListar(
-            final FabTipoAgenteClienteRest pTipoAgente,
+            final FabTipoAgenteClienteApi pTipoAgente,
             final ItfUsuario pUsuario, final java.lang.Object... pParametro) {
         super(FabApiRestRokcetChatV1Users.ASSINATURAS_LISTAR, pTipoAgente,
                 pUsuario, pParametro);
@@ -40,7 +40,7 @@ public class IntegracaoRestRocketChatAssinaturasListar
             resposta.addErro("Falha obetendo resposta");
 
         } else {
-            JSONArray grupos = (JSONArray) resposta.getJsonObj().get("update");
+            JSONArray grupos = (JSONArray) getResposta().getRespostaComoObjetoJson().get("update");
             for (Iterator it = grupos.iterator(); it.hasNext();) {
 
                 try {

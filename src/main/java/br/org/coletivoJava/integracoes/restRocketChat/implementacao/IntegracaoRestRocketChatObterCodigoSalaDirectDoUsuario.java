@@ -5,7 +5,7 @@ import br.org.coletivoJava.integracoes.restRocketChat.api.direct.FabApiRestRocke
 import com.jayway.restassured.path.json.JsonPath;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.conexaoWebServiceClient.ConsumoWSExecucao;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.implementacao.AcaoApiIntegracaoAbstrato;
-import com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.FabTipoAgenteClienteRest;
+import com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.FabTipoAgenteClienteApi;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.Interfaces.basico.ItfUsuario;
 
 @InfoIntegracaoRestRocketChatDirect(tipo = FabApiRestRocketChatV1Direct.OBTER_CODIGO_SALA_DIRECT_DO_USUARIO)
@@ -14,7 +14,7 @@ public class IntegracaoRestRocketChatObterCodigoSalaDirectDoUsuario
         AcaoApiIntegracaoAbstrato {
 
     public IntegracaoRestRocketChatObterCodigoSalaDirectDoUsuario(
-            final FabTipoAgenteClienteRest pTipoAgente,
+            final FabTipoAgenteClienteApi pTipoAgente,
             final ItfUsuario pUsuario, final java.lang.Object... pParametro) {
         super(FabApiRestRocketChatV1Direct.OBTER_CODIGO_SALA_DIRECT_DO_USUARIO,
                 pTipoAgente, pUsuario, pParametro);
