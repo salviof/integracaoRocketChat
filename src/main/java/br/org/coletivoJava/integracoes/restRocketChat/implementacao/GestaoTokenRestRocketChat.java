@@ -4,6 +4,7 @@ import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.conexaoWebSer
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.conexaoWebServiceClient.RespostaWebServiceSimples;
 import br.org.coletivoJava.integracoes.restRocketChat.api.channel.FabApiRestRocketChatV1Channel;
 import br.org.coletivoJava.integracoes.restRocketChat.api.FabConfigRocketChat;
+import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.FabTipoAgenteClienteApi;
 
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.token.ItfTokenDeAcessoExterno;
@@ -53,8 +54,11 @@ public class GestaoTokenRestRocketChat extends GestaoTokenDinamico {
         if (usuarioLogin != null) {
             RespostaWebServiceSimples resposta = UtilSBApiRestClient.getRespostaRest(url, FabTipoConexaoRest.POST, true,
                     new HashMap<>(), "user=" + usuarioLogin + "&password=" + senhaLogin);
-
-            armazenarRespostaToken(resposta.getResposta());
+            if (resposta.isSucesso()) {
+                armazenarRespostaToken(resposta.getResposta());
+            } else {
+                SBCore.enviarAvisoAoUsuario("Usuário ou senha inválida, verifique suas credenciais em " + getConfig().getPropriedade(FabConfigRocketChat.URL_SERVIDOR_ROCKET_CHAT));
+            }
         }
         return loadTokenArmazenado();
 
