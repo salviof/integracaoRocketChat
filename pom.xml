@@ -56,14 +56,8 @@
 
 
 
-        <dependency>
-            <groupId>com.google.oauth-client</groupId>
-            <artifactId>google-oauth-client</artifactId>
-            <version>1.30.4</version>
+    
 
-
-        </dependency>
-       
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
