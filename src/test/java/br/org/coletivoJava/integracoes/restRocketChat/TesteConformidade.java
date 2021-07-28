@@ -11,6 +11,8 @@ import br.org.coletivoJava.integracoes.restRocketChat.api.users.FabApiRestRokcet
 import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.conexaoWebServiceClient.RespostaWebServiceSimples;
 import com.super_bits.modulosSB.SBCore.integracao.rocketChat.implementacaoRCRest.ConfigCoreRCTestesRegraNegocio;
+import javax.validation.constraints.AssertTrue;
+import org.junit.Assert;
 import org.junit.Test;
 import testes.testesSupers.TestesApiRest;
 
@@ -24,10 +26,8 @@ public class TesteConformidade extends TestesApiRest {
     public void testes() {
         SBCore.configurar(new ConfigCoreRCTestesRegraNegocio(), SBCore.ESTADO_APP.DESENVOLVIMENTO);
         gerarCodigos(FabApiRestRokcetChatV1Users.class);
-        gerarCodigos(FabApiRestRocketChatV1Direct.class);
-        gerarCodigos(FabApiRestRocketChatV1Channel.class);
-        RespostaWebServiceSimples resposta = FabApiRestRokcetChatV1Users.DIRECT_MENSAGENS_CONTADORES.getAcao().getResposta();
-        System.out.println(resposta);
-        System.out.println(resposta.getRespostaTexto());
+        //    gerarCodigos(FabApiRestRocketChatV1Direct.class);
+        //   gerarCodigos(FabApiRestRocketChatV1Channel.class);
+
     }
 }

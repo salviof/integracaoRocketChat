@@ -30,6 +30,18 @@ public enum FabApiRestRokcetChatV1Users implements ItfFabricaIntegracaoRest {
             tipoConexao = FabTipoConexaoRest.GET,
             urlDocumentacao = "https://rocket.chat/docs/developer-guides/rest-api/users/list/")
     USUARIOS_LISTAR,
+    @InfoConsumoRestService(getPachServico = "/api/v1/users.list",
+            tipoConexao = FabTipoConexaoRest.GET,
+            parametrosGet = {"email"},
+            urlDocumentacao = "https://rocket.chat/docs/developer-guides/rest-api/users/list/")
+    USUARIOS_ENCONTRAR_POR_EMAIL,
+    @InfoConsumoRestService(getPachServico = "/api/v1/users.create",
+            tipoConexao = FabTipoConexaoRest.POST,
+            parametrosGet = {"name", "email", "password", "username"},
+            urlDocumentacao = "https://rocket.chat/docs/developer-guides/rest-api/users/create/")
+    //     -d '{"name": "name", "email": "email@user.tld", "password": "anypassyouwant", "username": "uniqueusername"}'
+
+    USUARIOS_CRIAR,
     /**
      * Aquardando este
      * requisito:https://github.com/RocketChat/Rocket.Chat/pull/13634
