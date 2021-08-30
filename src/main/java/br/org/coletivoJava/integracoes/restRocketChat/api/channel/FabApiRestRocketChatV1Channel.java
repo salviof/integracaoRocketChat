@@ -38,9 +38,10 @@ public enum FabApiRestRocketChatV1Channel implements ItfFabricaIntegracaoRest {
      * Atualmente suporta apenas pesquisas em canais vinculados a um ID, exemplo
      * nomeCanal-123 -> 123 representa o id
      */
-    @InfoConsumoRestService(getPachServico = "/api/v1/groups.listAll",
+    @InfoConsumoRestService(getPachServico = "/api/v1/groups.info?roomName={0}",
+            parametrosGet = {"nomeGrupo"},
             tipoConexao = FabTipoConexaoRest.GET,
-            urlDocumentacao = "https://rocket.chat/docs/developer-guides/rest-api/groups/list/ ")
+            urlDocumentacao = "http://localhost:3000/api/v1/groups.info?roomName={nomeGrupo}")
     GRUPO_EXISTE_GRUPO,
     /**
      * -dados: '{ "roomId": "ByehQjC44FwMeiLbX", "userId": "nSYqWzZ4GsKTX4dyK"
