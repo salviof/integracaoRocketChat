@@ -37,10 +37,12 @@ public class IntegracaoRestRocketChatUsuariosEncontrarPorEmail
     @Override
     public void gerarResposta(ConsumoWSExecucao pConsumoRest) {
         super.gerarResposta(pConsumoRest); //To change body of generated methods, choose Tools | Templates.
-        if (getResposta() != null) {
+        if (resposta.isSucesso()) {
+            if (getResposta() != null) {
 
-            if (!getResposta().getResposta().contains(getParametros()[0].toString())) {
-                getResposta().addErro("Usuário não encontrado");
+                if (!getResposta().getResposta().contains(getParametros()[0].toString())) {
+                    getResposta().addErro("Usuário não encontrado");
+                }
             }
         }
 

@@ -1,9 +1,11 @@
 package br.org.coletivoJava.integracoes.restRocketChat.implementacao;
 
+import br.org.coletivoJava.integracoes.restRocketChat.api.FabConfigRocketChat;
 import br.org.coletivoJava.integracoes.restRocketChat.api.InfoIntegracaoRestRocketChatChannel;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.conexaoWebServiceClient.ConsumoWSExecucao;
 import br.org.coletivoJava.integracoes.restRocketChat.api.channel.FabApiRestRocketChatV1Channel;
 import com.jayway.restassured.path.json.JsonPath;
+import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
 import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreStringFiltros;
 import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreStringsCammelCase;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.implementacao.AcaoApiIntegracaoAbstrato;
@@ -48,19 +50,31 @@ public class IntegracaoRestRocketChatGrupoExisteGrupo
                 resposta.addErro("O grupo não foi encontrado");
             }
             codigoGrupo = JsonPath.from(resp.toJSONString()).get("group._id");
+            nomeGrupo = JsonPath.from(resp.toJSONString()).get("group.fname");
+            urlEmbEmbedded = SBCore.getConfigModulo(FabConfigRocketChat.class).getPropriedade(FabConfigRocketChat.URL_SERVIDOR_ROCKET_CHAT) + "/group/" + nomeGrupo + "?layout=embedded";
             //   String codigoGrupo = getLocalizarCodigoGrupoByNomeOuIdentiicadorUnicoImutavel(parametros[0].toString(), resp);
             //    if (codigoGrupo == null) {
-
             //    }
         }
     }
+    private String urlEmbEmbedded;
+    private String nomeGrupo;
 
     public String getCodigoGrupo() {
         return codigoGrupo;
     }
 
+    public String getUrlEmbEmbedded() {
+        return urlEmbEmbedded;
+    }
+
+    public String getNomeGrupo() {
+        return nomeGrupo;
+    }
+
     public static String gerarIdentificadorGrupo(String pDepartamento, ItfBeanSimples pBeanRelacionado) {
-        return UtilSBCoreStringsCammelCase.getCamelByTextoPrimeiraLetraMaiuscula(UtilSBCoreStringFiltros.removeCaracteresEspeciais(pBeanRelacionado.getCampoInstanciadoByAnotacao(FabTipoAtributoObjeto.AAA_NOME).getValor().toString())) + "_" + UtilSBCoreStringsCammelCase.getCamelByTextoPrimeiraLetraMaiuscula(pDepartamento) + "_" + pBeanRelacionado.getId();
+        return UtilSBCoreStringsCammelCase.getCamelByTextoPrimeiraLetraMaiuscula(UtilSBCoreStringFiltros.removeCaracteresEspeciais(pBeanRelacionado.getCampoInstanciadoByAnotacao(FabTipoAtributoObjeto.AAA_NOME).getValor().toString()))
+                + "_" + UtilSBCoreStringsCammelCase.getCamelByTextoPrimeiraLetraMaiuscula(pDepartamento) + "_" + pBeanRelacionado.getId();
     }
 
     public static String extrairIdentificadoGrupo(String pString) {
