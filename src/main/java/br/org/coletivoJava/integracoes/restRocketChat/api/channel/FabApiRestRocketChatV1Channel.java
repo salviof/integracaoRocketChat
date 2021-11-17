@@ -26,7 +26,7 @@ public enum FabApiRestRocketChatV1Channel implements ItfFabricaIntegracaoRest {
 
     @InfoConsumoRestService(getPachServico = "/api/v1/groups.listAll",
             tipoConexao = FabTipoConexaoRest.GET,
-            urlDocumentacao = "https://rocket.chat/docs/developer-guides/rest-api/groups/list/ ")
+            urlDocumentacao = "https://rocket.chat/docs/developer-guides/rest-api/groups/list/")
     GRUPO_LISTAR,
     @InfoConsumoRestService(getPachServico = "/api/v1/groups.create",
             tipoConexao = FabTipoConexaoRest.POST,

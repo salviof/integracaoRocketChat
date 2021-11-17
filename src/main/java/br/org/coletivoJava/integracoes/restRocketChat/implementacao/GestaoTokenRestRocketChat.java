@@ -5,13 +5,15 @@ import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.conexaoWebSer
 import br.org.coletivoJava.integracoes.restRocketChat.api.channel.FabApiRestRocketChatV1Channel;
 import br.org.coletivoJava.integracoes.restRocketChat.api.FabConfigRocketChat;
 import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
+import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreDataHora;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.FabTipoAgenteClienteApi;
 
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.token.ItfTokenDeAcessoExterno;
-import com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.token.TokenDeAcessoExternoSimples;
+import com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.token.TokenDeAcessoExternoDinamico;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.implementacao.UtilSBApiRestClient;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.implementacao.gestaoToken.GestaoTokenDinamico;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.Interfaces.basico.ItfUsuario;
+import java.util.Date;
 import java.util.HashMap;
 import org.json.simple.JSONObject;
 
@@ -31,10 +33,6 @@ public class GestaoTokenRestRocketChat extends GestaoTokenDinamico {
     public ItfTokenDeAcessoExterno gerarNovoToken() {
         String url = getConfig().getPropriedade(FabConfigRocketChat.URL_SERVIDOR_ROCKET_CHAT) + "/api/v1/login";
 
-        if (validarToken()) {
-
-            return loadTokenArmazenado();
-        }
         String usuarioLogin = null;
         String senhaLogin = null;
 
@@ -55,7 +53,9 @@ public class GestaoTokenRestRocketChat extends GestaoTokenDinamico {
             RespostaWebServiceSimples resposta = UtilSBApiRestClient.getRespostaRest(url, FabTipoConexaoRest.POST, true,
                     new HashMap<>(), "user=" + usuarioLogin + "&password=" + senhaLogin);
             if (resposta.isSucesso()) {
-                armazenarRespostaToken(resposta.getResposta());
+                JSONObject jsonArquivado = resposta.getRespostaComoObjetoJson();
+                jsonArquivado.put("dataHora", new Date().getTime());
+                armazenarRespostaToken(jsonArquivado.toJSONString());
             } else {
                 SBCore.enviarAvisoAoUsuario("Usuário ou senha inválida, verifique suas credenciais em " + getConfig().getPropriedade(FabConfigRocketChat.URL_SERVIDOR_ROCKET_CHAT));
             }
@@ -68,8 +68,18 @@ public class GestaoTokenRestRocketChat extends GestaoTokenDinamico {
     public ItfTokenDeAcessoExterno extrairToken(JSONObject pJson) {
         try {
             codigoUsuarioRocketChat = ((JSONObject) pJson.get("data")).get("userId").toString();
-            String token = ((JSONObject) pJson.get("data")).get("authToken").toString();
-            return new TokenDeAcessoExternoSimples(token);
+            Date dataHoraExipira = UtilSBCoreDataHora.decrementaMinutos(new Date(), 5);
+
+            if (pJson.containsKey("dataHora")) {
+
+                Date dataHoraGeracaoToken = new Date((long) pJson.get("dataHora"));
+                dataHoraExipira = UtilSBCoreDataHora.incrementaDias(dataHoraGeracaoToken, 30);
+            }
+
+            String chaveToken = ((JSONObject) pJson.get("data")).get("authToken").toString();
+            TokenDeAcessoExternoDinamico token = new TokenDeAcessoExternoDinamico(chaveToken, dataHoraExipira);
+
+            return token;
         } catch (Throwable t) {
             return null;
         }
