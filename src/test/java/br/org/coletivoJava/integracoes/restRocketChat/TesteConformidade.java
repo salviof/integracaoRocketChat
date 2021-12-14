@@ -5,14 +5,9 @@
  */
 package br.org.coletivoJava.integracoes.restRocketChat;
 
-import br.org.coletivoJava.integracoes.restRocketChat.api.channel.FabApiRestRocketChatV1Channel;
-import br.org.coletivoJava.integracoes.restRocketChat.api.direct.FabApiRestRocketChatV1Direct;
 import br.org.coletivoJava.integracoes.restRocketChat.api.users.FabApiRestRokcetChatV1Users;
 import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
-import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.conexaoWebServiceClient.RespostaWebServiceSimples;
 import com.super_bits.modulosSB.SBCore.integracao.rocketChat.implementacaoRCRest.ConfigCoreRCTestesRegraNegocio;
-import javax.validation.constraints.AssertTrue;
-import org.junit.Assert;
 import org.junit.Test;
 import testes.testesSupers.TestesApiRest;
 
