@@ -9,6 +9,7 @@ import br.org.coletivoJava.integracoes.restRocketChat.api.channel.FabApiRestRock
 import br.org.coletivoJava.integracoes.restRocketChat.api.users.FabApiRestRokcetChatV1Users;
 import com.jayway.restassured.path.json.JsonPath;
 import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
+import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.conexaoWebServiceClient.ItfRespostaWebServiceSimples;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.conexaoWebServiceClient.RespostaWebServiceSimples;
 import com.super_bits.modulosSB.SBCore.integracao.rocketChat.implementacaoRCRest.ConfigCoreRCTestesRegraNegocio;
 import org.junit.Before;
@@ -40,7 +41,7 @@ public class IntegracaoRestRocketChatDirectMensagensContadoresTest {
         //autenticacaouser.setLoginSenhaUsuario("123321");
         //autenticacaouser.gerarNovoToken();
 
-        RespostaWebServiceSimples resposta1 = FabApiRestRokcetChatV1Users.USUARIOS_LISTAR.getAcao(SBCore.getUsuarioLogado()).getResposta();
+        ItfRespostaWebServiceSimples resposta1 = FabApiRestRokcetChatV1Users.USUARIOS_LISTAR.getAcao(SBCore.getUsuarioLogado()).getResposta();
         System.out.println(resposta1.isSucesso());
 
         IntegracaoRestRocketChatAssinaturasListar resposta = (IntegracaoRestRocketChatAssinaturasListar) FabApiRestRokcetChatV1Users.ASSINATURAS_LISTAR.getAcao(SBCore.getUsuarioLogado(), "salvio");

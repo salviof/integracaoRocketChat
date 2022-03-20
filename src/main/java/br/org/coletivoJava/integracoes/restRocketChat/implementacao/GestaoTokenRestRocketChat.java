@@ -6,6 +6,7 @@ import br.org.coletivoJava.integracoes.restRocketChat.api.channel.FabApiRestRock
 import br.org.coletivoJava.integracoes.restRocketChat.api.FabConfigRocketChat;
 import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
 import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreDataHora;
+import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.conexaoWebServiceClient.ItfRespostaWebServiceSimples;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.FabTipoAgenteClienteApi;
 
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.token.ItfTokenDeAcessoExterno;
@@ -89,10 +90,10 @@ public class GestaoTokenRestRocketChat extends GestaoTokenDinamico {
     public boolean validarToken() {
         switch (tipoAgente) {
             case USUARIO:
-                RespostaWebServiceSimples resp = FabApiRestRocketChatV1Channel.QUEM_SOU_EU.getAcao(usuario).getResposta();
+                ItfRespostaWebServiceSimples resp = FabApiRestRocketChatV1Channel.QUEM_SOU_EU.getAcao(usuario).getResposta();
                 return resp.isSucesso();
             case SISTEMA:
-                RespostaWebServiceSimples resp2 = FabApiRestRocketChatV1Channel.QUEM_SOU_EU.getAcao().getResposta();
+                ItfRespostaWebServiceSimples resp2 = FabApiRestRocketChatV1Channel.QUEM_SOU_EU.getAcao().getResposta();
                 return resp2.isSucesso();
 
             default:

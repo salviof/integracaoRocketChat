@@ -7,6 +7,7 @@ package br.org.coletivoJava.integracoes.restRocketChat.implementacao;
 
 import br.org.coletivoJava.integracoes.restRocketChat.api.channel.FabApiRestRocketChatV1Channel;
 import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
+import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.conexaoWebServiceClient.ItfRespostaWebServiceSimples;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.conexaoWebServiceClient.RespostaWebServiceSimples;
 import com.super_bits.modulosSB.SBCore.integracao.rocketChat.implementacaoRCRest.ConfigCoreRCTestesRegraNegocio;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.InfoCampos.ItensGenericos.basico.UsuarioSistemaRoot;
@@ -29,9 +30,9 @@ public class IntegracaoRestRocketChatGrupoExisteGrupoTest {
         GestaoTokenRestRocketChat autenticacaoSistema = (GestaoTokenRestRocketChat) FabApiRestRocketChatV1Channel.QUEM_SOU_EU.getGestaoToken();
         autenticacaoSistema.gerarNovoToken();
         IntegracaoRestRocketChatGrupoExisteGrupo teste;
-        RespostaWebServiceSimples respGrupo = FabApiRestRocketChatV1Channel.GRUPO_EXISTE_GRUPO.getAcao("EmpresaXQueVaiFecharContradoNomeDaEmpresa_Vendas_1").getResposta();
+        ItfRespostaWebServiceSimples respGrupo = FabApiRestRocketChatV1Channel.GRUPO_EXISTE_GRUPO.getAcao("EmpresaXQueVaiFecharContradoNomeDaEmpresa_Vendas_1").getResposta();
         System.out.println(respGrupo.isSucesso());
-        System.out.println(respGrupo.getResposta());
+        System.out.println(respGrupo.getRespostaTexto());
         System.out.println(IntegracaoRestRocketChatGrupoExisteGrupo.extrairIdentificadoGrupo("EmpresaXQueVaiFecharContradoNomeDaEmpresa_Vendas_1"));
         System.out.println(IntegracaoRestRocketChatGrupoExisteGrupo.gerarIdentificadorGrupo("Vendas", new UsuarioSistemaRoot()));
     }

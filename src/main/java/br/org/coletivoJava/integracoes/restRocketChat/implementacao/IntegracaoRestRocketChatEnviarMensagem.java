@@ -26,7 +26,7 @@ public class IntegracaoRestRocketChatEnviarMensagem
 
     @Override
     public RespostaWebServiceSimples getResposta() {
-        return super.getResposta(); //To change body of generated methods, choose Tools | Templates.
+        return (RespostaWebServiceSimples) super.getResposta(); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

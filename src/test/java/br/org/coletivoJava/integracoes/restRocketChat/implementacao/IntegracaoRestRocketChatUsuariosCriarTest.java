@@ -7,6 +7,7 @@ package br.org.coletivoJava.integracoes.restRocketChat.implementacao;
 
 import br.org.coletivoJava.integracoes.restRocketChat.api.users.FabApiRestRokcetChatV1Users;
 import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
+import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.conexaoWebServiceClient.ItfRespostaWebServiceSimples;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.conexaoWebServiceClient.RespostaWebServiceSimples;
 import com.super_bits.modulosSB.SBCore.integracao.rocketChat.implementacaoRCRest.ConfigCoreRCTestesRegraNegocio;
 import org.junit.After;
@@ -36,11 +37,11 @@ public class IntegracaoRestRocketChatUsuariosCriarTest {
         autenticacaoSistema.gerarNovoToken();
         IntegracaoRestRocketChatUsuariosCriar pesquisaEmail = (IntegracaoRestRocketChatUsuariosCriar) FabApiRestRokcetChatV1Users.USUARIOS_CRIAR
                 .getAcao("teste casanova", "teste@casanovadigital.com.br", "123", "teste_casanovadigital_com_br");
-        RespostaWebServiceSimples respPesquisaEmail = pesquisaEmail.getResposta();
+        ItfRespostaWebServiceSimples respPesquisaEmail = pesquisaEmail.getResposta();
         System.out.println(respPesquisaEmail.isSucesso());
-        System.out.println(respPesquisaEmail.getResposta());
+        System.out.println(respPesquisaEmail.getRespostaTexto());
         if (respPesquisaEmail.isSucesso()) {
-            System.out.println(respPesquisaEmail.getResposta());
+            System.out.println(respPesquisaEmail.getRespostaTexto());
         }
 
     }

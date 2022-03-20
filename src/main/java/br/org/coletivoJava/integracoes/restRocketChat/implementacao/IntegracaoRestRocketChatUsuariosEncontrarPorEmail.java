@@ -40,7 +40,7 @@ public class IntegracaoRestRocketChatUsuariosEncontrarPorEmail
         if (resposta.isSucesso()) {
             if (getResposta() != null) {
 
-                if (!getResposta().getResposta().contains(getParametros()[0].toString())) {
+                if (!getResposta().getRespostaTexto().contains(getParametros()[0].toString())) {
                     getResposta().addErro("Usuário não encontrado");
                 }
             }
