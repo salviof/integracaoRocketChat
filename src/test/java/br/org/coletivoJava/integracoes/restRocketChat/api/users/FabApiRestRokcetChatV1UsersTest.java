@@ -28,7 +28,7 @@ public class FabApiRestRokcetChatV1UsersTest extends TestesApiRest {
     @Test
     public void testValues() {
         SBCore.configurar(new ConfigCoreRCTestesRegraNegocio(), SBCore.ESTADO_APP.DESENVOLVIMENTO);
-        gerarCodigos(FabApiRestRokcetChatV1Users.class);
+        gerarCodigosChamadasEndpoint(FabApiRestRokcetChatV1Users.class);
         ItfRespostaWebServiceSimples resposta = FabApiRestRokcetChatV1Users.DIRECT_MENSAGENS_CONTADORES.getAcao().getResposta();
         System.out.println(resposta);
         System.out.println(resposta.getRespostaTexto());

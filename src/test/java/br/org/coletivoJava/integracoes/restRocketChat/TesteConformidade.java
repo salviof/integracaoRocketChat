@@ -1,11 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.org.coletivoJava.integracoes.restRocketChat;
 
-import br.org.coletivoJava.integracoes.restRocketChat.api.users.FabApiRestRokcetChatV1Users;
+import br.org.coletivoJava.integracoes.restRocketChat.api.mensagens.FabApiRestRocketChatMensagens;
 import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
 import com.super_bits.modulosSB.SBCore.integracao.rocketChat.implementacaoRCRest.ConfigCoreRCTestesRegraNegocio;
 import org.junit.Test;
@@ -20,9 +15,11 @@ public class TesteConformidade extends TestesApiRest {
     @Test
     public void testes() {
         SBCore.configurar(new ConfigCoreRCTestesRegraNegocio(), SBCore.ESTADO_APP.DESENVOLVIMENTO);
-        gerarCodigos(FabApiRestRokcetChatV1Users.class);
-        //    gerarCodigos(FabApiRestRocketChatV1Direct.class);
-        //   gerarCodigos(FabApiRestRocketChatV1Channel.class);
+        System.out.println(FabApiRestRocketChatMensagens.class.getSimpleName());
+        gerarCodigosChamadasEndpoint(FabApiRestRocketChatMensagens.class);
+//        gerarCodigosChamadasEndpoint(FabApiRestRokcetChatV1Users.class);
+        //    gerarCodigosChamadasEndpoint(FabApiRestRocketChatV1Direct.class);
+        //   gerarCodigosChamadasEndpoint(FabApiRestRocketChatV1Channel.class);
 
     }
 }
