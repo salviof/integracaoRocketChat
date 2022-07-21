@@ -35,6 +35,11 @@ public enum FabApiRestRokcetChatV1Users implements ItfFabricaIntegracaoRest {
             parametrosGet = {"email"},
             urlDocumentacao = "https://rocket.chat/docs/developer-guides/rest-api/users/list/")
     USUARIOS_ENCONTRAR_POR_EMAIL,
+    @InfoConsumoRestService(getPachServico = "/api/v1/users.info?userId={0}",
+            tipoConexao = FabTipoConexaoRest.GET,
+            parametrosGet = {"email"},
+            urlDocumentacao = "https://rocket.chat/docs/developer-guides/rest-api/users/list/")
+    USUARIOS_ENCONTRAR_POR_CODIGO,
     @InfoConsumoRestService(getPachServico = "/api/v1/users.create",
             tipoConexao = FabTipoConexaoRest.POST,
             parametrosGet = {"name", "email", "password", "username"},
@@ -46,6 +51,11 @@ public enum FabApiRestRokcetChatV1Users implements ItfFabricaIntegracaoRest {
      * Aquardando este
      * requisito:https://github.com/RocketChat/Rocket.Chat/pull/13634
      */
+    @InfoConsumoRestService(getPachServico = "/api/v1/users.update",
+            tipoConexao = FabTipoConexaoRest.POST,
+            parametrosGet = {"codUsuario", "senha"},
+            urlDocumentacao = "https://rocket.chat/docs/developer-guides/rest-api/users/create/")
+    USUARIOS_ALTERAR_SENHA,
     @InfoConsumoRestService(getPachServico = "/api/v1/im.counters",
             tipoConexao = FabTipoConexaoRest.GET,
             parametrosGet = {"username"},

@@ -43,6 +43,11 @@ public enum FabApiRestRocketChatV1Channel implements ItfFabricaIntegracaoRest {
             tipoConexao = FabTipoConexaoRest.GET,
             urlDocumentacao = "http://localhost:3000/api/v1/groups.info?roomName={nomeGrupo}")
     GRUPO_EXISTE_GRUPO,
+    @InfoConsumoRestService(getPachServico = "/api/v1/groups.members?roomId={0}",
+            parametrosGet = {"codigoCanalGrupoPrivado"},
+            tipoConexao = FabTipoConexaoRest.GET,
+            urlDocumentacao = "https://developer.rocket.chat/reference/api/rest-api/endpoints/core-endpoints/groups-endpoints/members")
+    GRUPO_LISTAR_USUARIOS,
     /**
      * -dados: '{ "roomId": "ByehQjC44FwMeiLbX", "userId": "nSYqWzZ4GsKTX4dyK"
      * }'
@@ -55,6 +60,7 @@ public enum FabApiRestRocketChatV1Channel implements ItfFabricaIntegracaoRest {
     GRUPO_ADICIONAR_USUARIO,
     @InfoConsumoRestService(getPachServico = "/api/v1/groups.delete",
             tipoConexao = FabTipoConexaoRest.POST,
+            parametrosPost = {"roomId"},
             urlDocumentacao = "https://rocket.chat/docs/developer-guides/rest-api/groups/delete/")
     GRUPO_EXCLUIR_GRUPO,
     @InfoConsumoRestService(getPachServico = "/api/v1/me",

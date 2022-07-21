@@ -26,11 +26,14 @@ public class IntegracaoRestRocketChatGrupoExisteGrupo
         super(FabApiRestRocketChatV1Channel.GRUPO_EXISTE_GRUPO, pTipoAgente,
                 pUsuario, pParametro);
     }
+    public static String CODIGO_ERRO_CANAL_GRUPO_PRIVANDO_NAO_ENCONTRADO = "error-room-not-found";
 
     @Override
     public String gerarUrlRequisicao() {
         String urlRequisicao = super.gerarUrlRequisicao();
         System.out.println("Acessando" + urlRequisicao);
+        String urlDocumentacao = "https://developer.rocket.chat/reference/api/rest-api/endpoints/core-endpoints/groups-endpoints/list";
+        //throw new UnsupportedOperationException("Este endpoint foi desativado na APi do rocket chat, a partir da versão: 0.67.0, verifique a documentação em urlDocumentacao");
         return urlRequisicao;
     }
 
@@ -52,9 +55,14 @@ public class IntegracaoRestRocketChatGrupoExisteGrupo
             codigoGrupo = JsonPath.from(resp.toJSONString()).get("group._id");
             nomeGrupo = JsonPath.from(resp.toJSONString()).get("group.fname");
             urlEmbEmbedded = SBCore.getConfigModulo(FabConfigRocketChat.class).getPropriedade(FabConfigRocketChat.URL_SERVIDOR_ROCKET_CHAT) + "/group/" + nomeGrupo + "?layout=embedded";
-            //   String codigoGrupo = getLocalizarCodigoGrupoByNomeOuIdentiicadorUnicoImutavel(parametros[0].toString(), resp);
-            //    if (codigoGrupo == null) {
-            //    }
+
+        } else {
+            if (resposta.getRetorno() != null) {
+                String text = (String) resposta.getRetorno();
+                if (text.contains(CODIGO_ERRO_CANAL_GRUPO_PRIVANDO_NAO_ENCONTRADO)) {
+                    resposta.addErro("O grupo não foi encontrado");
+                }
+            }
         }
     }
     private String urlEmbEmbedded;

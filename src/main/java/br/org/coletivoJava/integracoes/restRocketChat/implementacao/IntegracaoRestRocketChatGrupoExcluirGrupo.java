@@ -17,4 +17,13 @@ public class IntegracaoRestRocketChatGrupoExcluirGrupo
         super(FabApiRestRocketChatV1Channel.GRUPO_EXCLUIR_GRUPO, pTipoAgente,
                 pUsuario, pParametro);
     }
+
+    @Override
+    public String gerarCorpoRequisicao() {
+        if (getQuantidadeParametrosEnviados() != 1) {
+            throw new UnsupportedOperationException("Esperado um parametro para criação do grupo (Parametro nome)");
+        }
+        return "{ \"roomId\": \"" + parametros[0] + "\" }";
+    }
+
 }

@@ -10,29 +10,16 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
-@InfoIntegracaoRestRocketChatUsers(tipo = FabApiRestRokcetChatV1Users.USUARIOS_ENCONTRAR_POR_EMAIL)
-public class IntegracaoRestRocketChatUsuariosEncontrarPorEmail
+@InfoIntegracaoRestRocketChatUsers(tipo = FabApiRestRokcetChatV1Users.USUARIOS_ENCONTRAR_POR_CODIGO)
+public class IntegracaoRestRocketChatUsuariosEncontrarPorCodigo
         extends
         AcaoApiIntegracaoAbstrato {
 
-    public IntegracaoRestRocketChatUsuariosEncontrarPorEmail(
+    public IntegracaoRestRocketChatUsuariosEncontrarPorCodigo(
             final FabTipoAgenteClienteApi pTipoAgente,
             final ItfUsuario pUsuario, final java.lang.Object... pParametro) {
-        super(FabApiRestRokcetChatV1Users.USUARIOS_ENCONTRAR_POR_EMAIL,
+        super(FabApiRestRokcetChatV1Users.USUARIOS_ENCONTRAR_POR_CODIGO,
                 pTipoAgente, pUsuario, pParametro);
-    }
-
-    @Override
-    public String gerarUrlRequisicao() {
-        if (getQuantidadeParametrosEnviados() != 1) {
-            throw new UnsupportedOperationException("Esperado um parametro para criação do grupo (Parametro nome)");
-        }
-        String urlPadrao = super.gerarUrlRequisicao();
-        String urlChamadaComParametro = urlPadrao + "?query=" + encodeValue("{\"emails.address\" : \"" + getParametros()[0] + "\"}");
-        //encodeValue("{\"emails\":{\"$elemMatch\": {\"address\" : {\"$eq\":\"" + getParametros()[0] + "\"}}}}");
-
-        String urlCodificado = encodeValue(urlChamadaComParametro);
-        return urlChamadaComParametro;
     }
 
     @Override
@@ -40,6 +27,7 @@ public class IntegracaoRestRocketChatUsuariosEncontrarPorEmail
         super.gerarResposta(pConsumoRest); //To change body of generated methods, choose Tools | Templates.
         if (resposta.isSucesso()) {
             if (getResposta() != null) {
+
                 if (!getResposta().getRespostaTexto().contains(getParametros()[0].toString())) {
                     getResposta().addErro("Usuário não encontrado");
                 }
@@ -55,5 +43,4 @@ public class IntegracaoRestRocketChatUsuariosEncontrarPorEmail
             throw new RuntimeException(ex.getCause());
         }
     }
-
 }
