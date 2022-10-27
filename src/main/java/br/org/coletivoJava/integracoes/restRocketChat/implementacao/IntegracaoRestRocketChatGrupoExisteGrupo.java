@@ -6,6 +6,7 @@ import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.conexaoWebSer
 import br.org.coletivoJava.integracoes.restRocketChat.api.channel.FabApiRestRocketChatV1Channel;
 import com.jayway.restassured.path.json.JsonPath;
 import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
+import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreJson;
 import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreStringFiltros;
 import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreStringsCammelCase;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.implementacao.AcaoApiIntegracaoAbstrato;
@@ -13,6 +14,7 @@ import com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.FabTipoAgent
 import com.super_bits.modulosSB.SBCore.modulos.objetos.InfoCampos.campo.FabTipoAtributoObjeto;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.Interfaces.basico.ItfBeanSimples;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.Interfaces.basico.ItfUsuario;
+import jakarta.json.JsonObject;
 import org.json.simple.JSONObject;
 
 @InfoIntegracaoRestRocketChatChannel(tipo = FabApiRestRocketChatV1Channel.GRUPO_EXISTE_GRUPO)
@@ -47,13 +49,14 @@ public class IntegracaoRestRocketChatGrupoExisteGrupo
             resposta.addErro("Nenhum parametro foi enviado");
         }
         if (resposta.isSucesso()) {
-            JSONObject resp = getResposta().getRespostaComoObjetoJson();
-            boolean encontrou = (boolean) resp.get("success");
+            JsonObject resp = getResposta().getRespostaComoObjetoJson();
+            boolean encontrou = (boolean) resp.getBoolean("success");
             if (!encontrou) {
                 resposta.addErro("O grupo não foi encontrado");
             }
-            codigoGrupo = JsonPath.from(resp.toJSONString()).get("group._id");
-            nomeGrupo = JsonPath.from(resp.toJSONString()).get("group.fname");
+            String pJsonString = UtilSBCoreJson.getTextoByJsonObjeect(resp);
+            codigoGrupo = JsonPath.from(pJsonString).get("group._id");
+            nomeGrupo = JsonPath.from(pJsonString).get("group.fname");
             urlEmbEmbedded = SBCore.getConfigModulo(FabConfigRocketChat.class).getPropriedade(FabConfigRocketChat.URL_SERVIDOR_ROCKET_CHAT) + "/group/" + nomeGrupo + "?layout=embedded";
 
         } else {

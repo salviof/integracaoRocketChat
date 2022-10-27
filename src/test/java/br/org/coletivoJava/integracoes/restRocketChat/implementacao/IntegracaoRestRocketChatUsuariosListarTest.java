@@ -10,6 +10,8 @@ import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.conexaoWebServiceClient.ItfRespostaWebServiceSimples;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.conexaoWebServiceClient.RespostaWebServiceSimples;
 import com.super_bits.modulosSB.SBCore.integracao.rocketChat.implementacaoRCRest.ConfigCoreRCTestesRegraNegocio;
+import jakarta.json.JsonArray;
+import jakarta.json.JsonObject;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.junit.Test;
@@ -30,12 +32,12 @@ public class IntegracaoRestRocketChatUsuariosListarTest {
         SBCore.configurar(new ConfigCoreRCTestesRegraNegocio(), SBCore.ESTADO_APP.DESENVOLVIMENTO);
 //RespostaWebServiceSimples resp = FabApiRestRokcetChatV1Users.USUARIOS_LISTAR.getAcao().getResposta();
         ItfRespostaWebServiceSimples resp = FabApiRestRokcetChatV1Users.USUARIOS_LISTAR.getAcao().getResposta();
-        JSONObject dados = resp.getRespostaComoObjetoJson();
-        JSONArray usuarios = (JSONArray) dados.get("users");
+        JsonObject dados = resp.getRespostaComoObjetoJson();
+        JsonArray usuarios = (JsonArray) dados.getJsonArray("users");
         usuarios.stream().forEach(usr -> {
 
-            JSONObject usuario = (JSONObject) usr;
-            JSONArray emails = (JSONArray) usuario.get("emails");
+            JsonObject usuario = (JsonObject) usr;
+            JsonArray emails = (JsonArray) usuario.get("emails");
             String id = usuario.get("_id").toString();
             String nome = usuario.get("username").toString();
             System.out.println(nome);

@@ -16,6 +16,7 @@ import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.conexaoWebServiceClient.ItfRespostaWebServiceSimples;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.token.ItfTokenGestao;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.Interfaces.basico.ItfUsuario;
+import jakarta.json.JsonObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -108,7 +109,7 @@ public class ServicoChatRocketChat implements ItfErpChatService {
             String apicodigoGrupo = grupoExisteApi.getCodigoGrupo();
             ItfRespostaWebServiceSimples respostaListarUsuarios = FabApiRestRocketChatV1Channel.GRUPO_LISTAR_USUARIOS.getAcao(apicodigoGrupo).getResposta();
             if (respostaListarUsuarios.isSucesso()) {
-                JSONObject usuariosDoGrupoJson = respostaListarUsuarios.getRespostaComoObjetoJson();
+                JsonObject usuariosDoGrupoJson = respostaListarUsuarios.getRespostaComoObjetoJson();
                 JSONArray membros = (JSONArray) usuariosDoGrupoJson.get("members");
                 List<ItfUsuarioChat> listaUsiariosMembros = new ArrayList<>();
                 for (Object membro : membros) {
@@ -186,7 +187,7 @@ public class ServicoChatRocketChat implements ItfErpChatService {
         if (!FabApiRestRokcetChatV1Users.USUARIOS_LISTAR.getAcao().getTokenGestao().isTemTokemAtivo()) {
             FabApiRestRokcetChatV1Users.USUARIOS_LISTAR.getAcao().getTokenGestao().gerarNovoToken();
         }
-        JSONObject respJson = FabApiRestRokcetChatV1Users.USUARIOS_LISTAR.getAcao().getResposta().getRespostaComoObjetoJson();
+        JsonObject respJson = FabApiRestRokcetChatV1Users.USUARIOS_LISTAR.getAcao().getResposta().getRespostaComoObjetoJson();
 
         if (respJson == null) {
             if (!FabApiRestRokcetChatV1Users.USUARIOS_LISTAR.getGestaoToken().isTemTokemAtivo()) {
@@ -237,7 +238,7 @@ public class ServicoChatRocketChat implements ItfErpChatService {
         ItfRespostaWebServiceSimples respPesquisaEmail = pesquisaEmail.getResposta();
         if (respPesquisaEmail.isSucesso()) {
             UsuarioChatBeanTransitorio usuarioDados = new UsuarioChatBeanTransitorio();
-            JSONObject resposta = respPesquisaEmail.getRespostaComoObjetoJson();
+            JsonObject resposta = respPesquisaEmail.getRespostaComoObjetoJson();
             JSONArray arrayUsuarios = (JSONArray) resposta.get("users");
 
             JSONObject usuarioJson = (JSONObject) arrayUsuarios.get(0);
@@ -305,8 +306,8 @@ public class ServicoChatRocketChat implements ItfErpChatService {
 
         if (usuarioJaCadastrado == null) {
             ItfRespostaWebServiceSimples resposta = FabApiRestRokcetChatV1Users.USUARIOS_CRIAR.getAcao(pUsuario.getNome(), pUsuario.getEmail(), pSenha, pUsuario.getApelido()).getResposta();
-            JSONObject respostaJson = resposta.getRespostaComoObjetoJson();
-            JSONObject usuariojson = (JSONObject) respostaJson.get("user");
+            JsonObject respostaJson = resposta.getRespostaComoObjetoJson();
+            JsonObject usuariojson = (JsonObject) respostaJson.getJsonObject("user");
             UsuarioChatBeanTransitorio usuario = new UsuarioChatBeanTransitorio();
             String codigo = respostaJson.get("_id").toString();
             usuario.setCodigo(codigo);

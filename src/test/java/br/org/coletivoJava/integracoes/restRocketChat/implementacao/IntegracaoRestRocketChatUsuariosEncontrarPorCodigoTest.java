@@ -9,6 +9,8 @@ import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.conexaoWebServiceClient.ConsumoWSExecucao;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.conexaoWebServiceClient.ItfRespostaWebServiceSimples;
 import com.super_bits.modulosSB.SBCore.integracao.rocketChat.implementacaoRCRest.ConfigCoreRCTestesRegraNegocio;
+import jakarta.json.JsonArray;
+import jakarta.json.JsonObject;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -54,9 +56,9 @@ public class IntegracaoRestRocketChatUsuariosEncontrarPorCodigoTest {
     public void testGerarUrlRequisicao() {
 
         ItfRespostaWebServiceSimples resposta = FabApiRestRokcetChatV1Users.USUARIOS_ENCONTRAR_POR_EMAIL.getAcao("salvio@casanovadigital.com.br").getResposta();
-        JSONObject usuarioEncontrado = resposta.getRespostaComoObjetoJson();
+        JsonObject usuarioEncontrado = resposta.getRespostaComoObjetoJson();
 
-        JSONArray usuariosrJSon = (JSONArray) usuarioEncontrado.get("users");
+        JsonArray usuariosrJSon = (JsonArray) usuarioEncontrado.getJsonArray("users");
 
         String id = (String) ((JSONObject) usuariosrJSon.get(0)).get("_id");
         ItfRespostaWebServiceSimples repostaCore = FabApiRestRokcetChatV1Users.USUARIOS_ENCONTRAR_POR_CODIGO.getAcao(id).getResposta();

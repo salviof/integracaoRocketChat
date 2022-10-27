@@ -6,6 +6,7 @@ import br.org.coletivoJava.integracoes.restRocketChat.api.channel.FabApiRestRock
 import br.org.coletivoJava.integracoes.restRocketChat.api.FabConfigRocketChat;
 import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
 import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreDataHora;
+import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreJson;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.conexaoWebServiceClient.ItfRespostaWebServiceSimples;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.FabTipoAgenteClienteApi;
 
@@ -14,6 +15,7 @@ import com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.token.TokenD
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.implementacao.UtilSBApiRestClient;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.implementacao.gestaoToken.GestaoTokenDinamico;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.Interfaces.basico.ItfUsuario;
+import jakarta.json.JsonObject;
 import java.util.Date;
 import java.util.HashMap;
 import org.json.simple.JSONObject;
@@ -54,9 +56,9 @@ public class GestaoTokenRestRocketChat extends GestaoTokenDinamico {
             RespostaWebServiceSimples resposta = UtilSBApiRestClient.getRespostaRest(url, FabTipoConexaoRest.POST, true,
                     new HashMap<>(), "user=" + usuarioLogin + "&password=" + senhaLogin);
             if (resposta.isSucesso()) {
-                JSONObject jsonArquivado = resposta.getRespostaComoObjetoJson();
-                jsonArquivado.put("dataHora", new Date().getTime());
-                armazenarRespostaToken(jsonArquivado.toJSONString());
+                JsonObject jsonArquivado = resposta.getRespostaComoObjetoJson();
+                jsonArquivado = UtilSBCoreJson.getJsonObjectIncrementandoCampo(jsonArquivado, "dataHora", new Date().getTime());
+                armazenarRespostaToken(UtilSBCoreJson.getTextoByJsonObjeect(jsonArquivado));
             } else {
                 SBCore.enviarAvisoAoUsuario("Usuário ou senha inválida, verifique suas credenciais em " + getConfig().getPropriedade(FabConfigRocketChat.URL_SERVIDOR_ROCKET_CHAT));
             }
