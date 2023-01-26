@@ -4,6 +4,7 @@ import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.conexaoWebSer
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.conexaoWebServiceClient.RespostaWebServiceSimples;
 import br.org.coletivoJava.integracoes.restRocketChat.api.channel.FabApiRestRocketChatV1Channel;
 import br.org.coletivoJava.integracoes.restRocketChat.api.FabConfigRocketChat;
+import br.org.coletivoJava.integracoes.restRocketChat.api.sessao.FabApiRestRocketChatSessao;
 import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
 import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreDataHora;
 import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreJson;
@@ -33,7 +34,7 @@ public class GestaoTokenRestRocketChat extends GestaoTokenDinamico {
     }
 
     @Override
-    public ItfTokenDeAcessoExterno gerarNovoToken() {
+    public synchronized ItfTokenDeAcessoExterno gerarNovoToken() {
         String url = getConfig().getPropriedade(FabConfigRocketChat.URL_SERVIDOR_ROCKET_CHAT) + "/api/v1/login";
 
         String usuarioLogin = null;
@@ -76,7 +77,7 @@ public class GestaoTokenRestRocketChat extends GestaoTokenDinamico {
             if (pJson.containsKey("dataHora")) {
 
                 Date dataHoraGeracaoToken = new Date((long) pJson.get("dataHora"));
-                dataHoraExipira = UtilSBCoreDataHora.incrementaDias(dataHoraGeracaoToken, 30);
+                dataHoraExipira = UtilSBCoreDataHora.incrementaHoras(dataHoraGeracaoToken, 6);
             }
 
             String chaveToken = ((JSONObject) pJson.get("data")).get("authToken").toString();
@@ -89,7 +90,13 @@ public class GestaoTokenRestRocketChat extends GestaoTokenDinamico {
     }
 
     @Override
-    public boolean validarToken() {
+    public synchronized boolean validarToken() {
+        if (getToken() == null || getTokenCompleto() == null) {
+            return false;
+        }
+        if (!getTokenCompleto().isTokenValido()) {
+            return false;
+        }
         switch (tipoAgente) {
             case USUARIO:
                 ItfRespostaWebServiceSimples resp = FabApiRestRocketChatV1Channel.QUEM_SOU_EU.getAcao(usuario).getResposta();
@@ -135,6 +142,15 @@ public class GestaoTokenRestRocketChat extends GestaoTokenDinamico {
     @Override
     public boolean isTemTokemAtivo() {
         return super.isTemTokemAtivo(); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public synchronized boolean excluirToken() {
+        if (!super.excluirToken()) {
+            return false;
+        }
+        ItfRespostaWebServiceSimples respPesquisaEmail = FabApiRestRocketChatSessao.EFETUAR_LOUGOUT.getAcao().getResposta();
+        return respPesquisaEmail.isSucesso();
     }
 
 }

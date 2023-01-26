@@ -9,6 +9,7 @@ import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
 import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreJson;
 import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreStringFiltros;
 import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreStringsCammelCase;
+import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.conexaoWebServiceClient.RespostaWebServiceSimples;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.implementacao.AcaoApiIntegracaoAbstrato;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.FabTipoAgenteClienteApi;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.InfoCampos.campo.FabTipoAtributoObjeto;
@@ -95,4 +96,10 @@ public class IntegracaoRestRocketChatGrupoExisteGrupo
         String codigoTipoDeGrupo = pString.substring(indiceInicioDepartamento, indiceSeparadorID_DEPARTAMENTO + 1);
         return codigoTipoDeGrupo + cofigoDoCliente;
     }
+
+    @Override
+    protected RespostaWebServiceSimples gerarRespostaTratamentoFino(RespostaWebServiceSimples pRespostaWSSemTratamento) {
+        return UtilIntRocketChat.gerarRespostaTratamentoFino(pRespostaWSSemTratamento);
+    }
+
 }

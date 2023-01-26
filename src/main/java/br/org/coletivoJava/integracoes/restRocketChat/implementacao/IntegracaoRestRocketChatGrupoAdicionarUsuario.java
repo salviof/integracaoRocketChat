@@ -2,6 +2,7 @@ package br.org.coletivoJava.integracoes.restRocketChat.implementacao;
 
 import br.org.coletivoJava.integracoes.restRocketChat.api.InfoIntegracaoRestRocketChatChannel;
 import br.org.coletivoJava.integracoes.restRocketChat.api.channel.FabApiRestRocketChatV1Channel;
+import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.conexaoWebServiceClient.RespostaWebServiceSimples;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.implementacao.AcaoApiIntegracaoAbstrato;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.FabTipoAgenteClienteApi;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.Interfaces.basico.ItfUsuario;
@@ -30,6 +31,11 @@ public class IntegracaoRestRocketChatGrupoAdicionarUsuario
         cabecalho.put("Content-type", "application/json");
         return cabecalho;
 
+    }
+
+    @Override
+    protected RespostaWebServiceSimples gerarRespostaTratamentoFino(RespostaWebServiceSimples pRespostaWSSemTratamento) {
+        return UtilIntRocketChat.gerarRespostaTratamentoFino(pRespostaWSSemTratamento);
     }
 
 }

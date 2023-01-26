@@ -56,6 +56,7 @@ public enum FabApiRestRocketChatV1Channel implements ItfFabricaIntegracaoRest {
     @InfoConsumoRestService(getPachServico = "/api/v1/groups.invite",
             tipoConexao = FabTipoConexaoRest.POST, tipoInformacaoEnviada = FabTipoArquivoImportacao.JSON,
             tipoInformacaoRecebida = FabTipoArquivoImportacao.JSON,
+            parametrosPost = {"room_id", "user_id"},
             urlDocumentacao = "https://rocket.chat/docs/developer-guides/rest-api/groups/invite/ ")
     GRUPO_ADICIONAR_USUARIO,
     @InfoConsumoRestService(getPachServico = "/api/v1/groups.delete",
@@ -76,7 +77,7 @@ public enum FabApiRestRocketChatV1Channel implements ItfFabricaIntegracaoRest {
     @InfoConsumoRestService(getPachServico = "/api/v1/chat.postMessage",
             tipoConexao = FabTipoConexaoRest.POST, tipoInformacaoEnviada = FabTipoArquivoImportacao.JSON,
             tipoInformacaoRecebida = FabTipoArquivoImportacao.JSON,
-            parametrosPost = {"channel", "text"},
+            parametrosPost = {"channel", "text", "alias(Opcional)"},
             urlDocumentacao = "https://docs.rocket.chat/api/rest-api/methods/chat/sendmessage")
     ENVIAR_MENSAGEM;
 

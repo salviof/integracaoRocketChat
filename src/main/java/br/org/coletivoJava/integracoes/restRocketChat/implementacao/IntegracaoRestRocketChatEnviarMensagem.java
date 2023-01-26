@@ -2,10 +2,14 @@ package br.org.coletivoJava.integracoes.restRocketChat.implementacao;
 
 import br.org.coletivoJava.integracoes.restRocketChat.api.InfoIntegracaoRestRocketChatChannel;
 import br.org.coletivoJava.integracoes.restRocketChat.api.channel.FabApiRestRocketChatV1Channel;
+import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreJson;
+import com.super_bits.modulosSB.SBCore.UtilGeral.json.ErroProcessandoJson;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.conexaoWebServiceClient.RespostaWebServiceSimples;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.implementacao.AcaoApiIntegracaoAbstrato;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.FabTipoAgenteClienteApi;
+import com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.token.ItfTokenGestao;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.Interfaces.basico.ItfUsuario;
+import jakarta.json.JsonObjectBuilder;
 
 @InfoIntegracaoRestRocketChatChannel(tipo = FabApiRestRocketChatV1Channel.ENVIAR_MENSAGEM)
 public class IntegracaoRestRocketChatEnviarMensagem
@@ -20,8 +24,48 @@ public class IntegracaoRestRocketChatEnviarMensagem
     }
 
     @Override
+    public GestaoTokenRestRocketChat getTokenGestao() {
+        return (GestaoTokenRestRocketChat) super.getTokenGestao(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+    }
+
+    @Override
     public String gerarCorpoRequisicao() {
-        return "{ \"channel\": \"" + parametros[0] + "\", \"text\": \"" + parametros[1] + "\" }";
+
+        String pCanal_sala = (String) parametros[0];
+
+        String pMensagem = (String) parametros[1];
+
+        boolean envioNomeCanal;
+
+        String propriedadetipoCanal;
+        if (pCanal_sala.startsWith("#")) {
+            envioNomeCanal = true;
+
+        } else {
+            envioNomeCanal = false;
+
+        }
+        String pApelido = null;
+        if (parametros.length == 3) {
+            pApelido = (String) parametros[2];
+        } else {
+            pApelido = getTokenGestao().getLoginNomeUsuario();
+        }
+        if (envioNomeCanal) {
+            propriedadetipoCanal = "channel";
+        } else {
+            propriedadetipoCanal = "roomId";
+        }
+
+        try {
+            JsonObjectBuilder jsonCorpoMensagem = UtilSBCoreJson.getJsonBuilderBySequenciaChaveValor(propriedadetipoCanal, pCanal_sala, "alias", pApelido, "text", pMensagem);
+
+            String texto = UtilSBCoreJson.getTextoByJsonObjeect(jsonCorpoMensagem.build());
+            return texto;
+        } catch (ErroProcessandoJson ex) {
+            throw new UnsupportedOperationException("Falha definindo parametros de requisição" + ex.getMessage());
+        }
+
     }
 
     @Override

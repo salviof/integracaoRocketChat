@@ -4,6 +4,7 @@ import br.org.coletivoJava.integracoes.restRocketChat.api.InfoIntegracaoRestRock
 import br.org.coletivoJava.integracoes.restRocketChat.api.channel.FabApiRestRocketChatV1Channel;
 import static br.org.coletivoJava.integracoes.restRocketChat.implementacao.IntegracaoRestRocketChatGrupoExisteGrupo.extrairIdentificadoGrupo;
 import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
+import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.conexaoWebServiceClient.RespostaWebServiceSimples;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.implementacao.AcaoApiIntegracaoAbstrato;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.FabTipoAgenteClienteApi;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.Interfaces.basico.ItfUsuario;
@@ -59,6 +60,11 @@ public class IntegracaoRestRocketChatGrupoListar
 
     public static String getLocalizarIdRCGrupoByNomeOuIdentiicadorUnicoImutavel(String nomeOuIdentificador, JSONObject respostaApiPesquisaGrupo) {
         return getLocalizarAtributoDeGrupoByNomeOuIdentiicadorUnicoImutavel(nomeOuIdentificador, respostaApiPesquisaGrupo, "_id");
+    }
+
+    @Override
+    protected RespostaWebServiceSimples gerarRespostaTratamentoFino(RespostaWebServiceSimples pRespostaWSSemTratamento) {
+        return super.gerarRespostaTratamentoFino(pRespostaWSSemTratamento); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
     }
 
 }
