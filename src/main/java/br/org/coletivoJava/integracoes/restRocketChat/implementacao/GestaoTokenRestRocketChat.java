@@ -69,14 +69,14 @@ public class GestaoTokenRestRocketChat extends GestaoTokenDinamico {
     }
 
     @Override
-    public ItfTokenDeAcessoExterno extrairToken(JSONObject pJson) {
+    public ItfTokenDeAcessoExterno extrairToken(JsonObject pJson) {
         try {
             codigoUsuarioRocketChat = ((JSONObject) pJson.get("data")).get("userId").toString();
             Date dataHoraExipira = UtilSBCoreDataHora.decrementaMinutos(new Date(), 5);
 
             if (pJson.containsKey("dataHora")) {
 
-                Date dataHoraGeracaoToken = new Date((long) pJson.get("dataHora"));
+                Date dataHoraGeracaoToken = new Date((long) pJson.getJsonNumber("dataHora").longValue());
                 dataHoraExipira = UtilSBCoreDataHora.incrementaHoras(dataHoraGeracaoToken, 6);
             }
 

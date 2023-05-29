@@ -16,7 +16,9 @@ import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.conexaoWebServiceClient.ItfRespostaWebServiceSimples;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.token.ItfTokenGestao;
 import com.super_bits.modulosSB.SBCore.modulos.objetos.registro.Interfaces.basico.ItfUsuario;
+import jakarta.json.JsonArray;
 import jakarta.json.JsonObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,8 +26,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 
 /**
  *
@@ -104,17 +104,17 @@ public class ServicoChatRocketChat implements ItfErpChatService {
             return salaChat;
         } else {
 
-            JSONObject grupo = (JSONObject) grupoExisteApi.getResposta().getRespostaComoObjetoJson().get("group");
+            JsonObject grupo = (JsonObject) grupoExisteApi.getResposta().getRespostaComoObjetoJson().get("group");
 
             String apicodigoGrupo = grupoExisteApi.getCodigoGrupo();
             ItfRespostaWebServiceSimples respostaListarUsuarios = FabApiRestRocketChatV1Channel.GRUPO_LISTAR_USUARIOS.getAcao(apicodigoGrupo).getResposta();
             if (respostaListarUsuarios.isSucesso()) {
                 JsonObject usuariosDoGrupoJson = respostaListarUsuarios.getRespostaComoObjetoJson();
-                JSONArray membros = (JSONArray) usuariosDoGrupoJson.get("members");
+                JsonArray membros = usuariosDoGrupoJson.getJsonArray("members");
                 List<ItfUsuarioChat> listaUsiariosMembros = new ArrayList<>();
                 for (Object membro : membros) {
-                    JSONObject membroJsonOb = (JSONObject) membro;
-                    String codigoMembro = (String) membroJsonOb.get("_id");
+                    JsonObject membroJsonOb = (JsonObject) membro;
+                    String codigoMembro = (String) membroJsonOb.getString("_id");
                     try {
                         ItfUsuarioChat usuario = getUsuarioByCodigo(codigoMembro);
                         listaUsiariosMembros.add(usuario);
@@ -200,15 +200,15 @@ public class ServicoChatRocketChat implements ItfErpChatService {
             }
         }
 
-        JSONArray usuarioJson = (JSONArray) respJson.get("users");
+        JsonArray usuarioJson = respJson.getJsonArray("users");
 
         usuarioJson.stream().forEach(usr -> {
             UsuarioChatBeanTransitorio novousuarop = new UsuarioChatBeanTransitorio();
-            JSONObject usuario = (JSONObject) usr;
+            JsonObject usuario = (JsonObject) usr;
             List<String> emailSecundario = new ArrayList<>();
-            JSONArray emails = (JSONArray) usuario.get("emails");
+            JsonArray emails = usuario.getJsonArray("emails");
             emails.forEach(mail -> {
-                JSONObject emailJson = (JSONObject) mail;
+                JsonObject emailJson = (JsonObject) mail;
 
                 emailSecundario.add(emailJson.get("address").toString());
             });
@@ -239,20 +239,20 @@ public class ServicoChatRocketChat implements ItfErpChatService {
         if (respPesquisaEmail.isSucesso()) {
             UsuarioChatBeanTransitorio usuarioDados = new UsuarioChatBeanTransitorio();
             JsonObject resposta = respPesquisaEmail.getRespostaComoObjetoJson();
-            JSONArray arrayUsuarios = (JSONArray) resposta.get("users");
+            JsonArray arrayUsuarios = resposta.getJsonArray("users");
 
-            JSONObject usuarioJson = (JSONObject) arrayUsuarios.get(0);
+            JsonObject usuarioJson = (JsonObject) arrayUsuarios.get(0);
 
             if (arrayUsuarios.size() > 1) {
                 throw new ErroConexaoServicoChat("O e-mail: " + pEmail + " está vinculado a mais de uma conta");
             }
 
-            JSONArray emailsUsuario = (JSONArray) usuarioJson.get("emails");
-            JSONObject endereco = (JSONObject) emailsUsuario.get(0);
+            JsonArray emailsUsuario = usuarioJson.getJsonArray("emails");
+            JsonObject endereco = (JsonObject) emailsUsuario.get(0);
             String email = endereco.get("address").toString();
-            usuarioDados.setCodigo((String) usuarioJson.get("_id"));
+            usuarioDados.setCodigo((String) usuarioJson.getString("_id"));
             usuarioDados.setEmail(pEmail);
-            usuarioDados.setNome((String) usuarioJson.get("name"));
+            usuarioDados.setNome((String) usuarioJson.getString("name"));
             return usuarioDados;
 
         }
@@ -274,10 +274,10 @@ public class ServicoChatRocketChat implements ItfErpChatService {
             return usuarioPesquisa.get();
         }
         ItfRespostaWebServiceSimples resposta = FabApiRestRokcetChatV1Users.USUARIOS_ENCONTRAR_POR_CODIGO.getAcao(pCodigo).getResposta();
-        JSONObject usuarioJson = (JSONObject) resposta.getRespostaComoObjetoJson().get("user");
+        JsonObject usuarioJson = (JsonObject) resposta.getRespostaComoObjetoJson().get("user");
 
-        JSONArray emailsUsuario = (JSONArray) usuarioJson.get("emails");
-        JSONObject endereco = (JSONObject) emailsUsuario.get(0);
+        JsonArray emailsUsuario = usuarioJson.getJsonArray("emails");
+        JsonObject endereco = (JsonObject) emailsUsuario.get(0);
         String email = endereco.get("address").toString();
         return getUsuario(email);
 
