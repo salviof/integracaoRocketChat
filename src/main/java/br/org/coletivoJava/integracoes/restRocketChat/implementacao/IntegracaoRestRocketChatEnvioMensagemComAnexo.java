@@ -26,10 +26,10 @@ public class IntegracaoRestRocketChatEnvioMensagemComAnexo
 
     @Override
     public String gerarCorpoRequisicao() {
-        boolean temAnexo = parametros.length == 5;
-        String pCanal_sala = (String) parametros[0];
-        String pApelido = (String) parametros[1];
-        String pMensagem = (String) parametros[2];
+        boolean temAnexo = parametros.size() == 5;
+        String pCanal_sala = (String) parametros.get(0);
+        String pApelido = (String) parametros.get(1);
+        String pMensagem = (String) parametros.get(2);
 
         boolean envioNomeCanal;
         boolean enviouCodigoChannelChat;
@@ -53,8 +53,8 @@ public class IntegracaoRestRocketChatEnvioMensagemComAnexo
             JsonObjectBuilder jsonCorpoMensagem = UtilSBCoreJson.getJsonBuilderBySequenciaChaveValor(propriedadetipoCanal, pCanal_sala, "alias", pApelido, "text", pMensagem);
 
             if (temAnexo) {
-                String pTituloImage = (String) parametros[3];
-                String pUrlImagem = (String) parametros[4];
+                String pTituloImage = (String) parametros.get(3);
+                String pUrlImagem = (String) parametros.get(4);
                 JsonArrayBuilder builderArrayAnexxos = Json.createArrayBuilder();
                 JsonObject jsonAnexos = UtilSBCoreJson
                         .getJsonObjectBySequenciaChaveValor("title", pTituloImage, "image_url", pUrlImagem);

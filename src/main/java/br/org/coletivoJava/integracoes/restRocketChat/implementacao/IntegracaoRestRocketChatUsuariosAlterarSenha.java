@@ -23,8 +23,8 @@ public class IntegracaoRestRocketChatUsuariosAlterarSenha
         if (getQuantidadeParametrosEnviados() != 2) {
             throw new UnsupportedOperationException("Esperado 2 parametros código do usuário e senha");
         }
-        String corpo = "{\"userId\": \"" + parametros[0] + "\","
-                + " \"data\": { \"password\": \"" + parametros[1] + "\"}}";
+        String corpo = "{\"userId\": \"" + parametros.get(0) + "\","
+                + " \"data\": { \"password\": \"" + parametros.get(1) + "\"}}";
         return corpo;
 
     }

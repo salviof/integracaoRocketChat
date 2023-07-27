@@ -22,7 +22,7 @@ public class IntegracaoRestRocketChatGrupoAdicionarUsuario
 
     @Override
     public String gerarCorpoRequisicao() {
-        return "{ \"roomId\": \"" + parametros[0] + "\", \"userId\": \"" + parametros[1] + "\" }";
+        return "{ \"roomId\": \"" + parametros.get(0) + "\", \"userId\": \"" + parametros.get(1) + "\" }";
     }
 
     @Override

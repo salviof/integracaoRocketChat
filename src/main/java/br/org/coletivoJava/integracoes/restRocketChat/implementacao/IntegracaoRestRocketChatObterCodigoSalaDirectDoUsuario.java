@@ -22,7 +22,7 @@ public class IntegracaoRestRocketChatObterCodigoSalaDirectDoUsuario
 
     @Override
     public String gerarCorpoRequisicao() {
-        return "{ \"username\": \"" + parametros[0] + "\" }";
+        return "{ \"username\": \"" + parametros.get(0) + "\" }";
     }
 
     @Override

@@ -4,6 +4,7 @@ import br.org.coletivoJava.integracoes.restRocketChat.api.InfoIntegracaoRestRock
 import br.org.coletivoJava.integracoes.restRocketChat.api.channel.FabApiRestRocketChatV1Channel;
 import com.super_bits.modulosSB.SBCore.UtilGeral.UtilSBCoreJson;
 import com.super_bits.modulosSB.SBCore.UtilGeral.json.ErroProcessandoJson;
+import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.conexaoWebServiceClient.ItfRespostaWebServiceSimples;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.WS.conexaoWebServiceClient.RespostaWebServiceSimples;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.implementacao.AcaoApiIntegracaoAbstrato;
 import com.super_bits.modulosSB.SBCore.integracao.libRestClient.api.FabTipoAgenteClienteApi;
@@ -31,9 +32,9 @@ public class IntegracaoRestRocketChatEnviarMensagem
     @Override
     public String gerarCorpoRequisicao() {
 
-        String pCanal_sala = (String) parametros[0];
+        String pCanal_sala = (String) parametros.get(0);
 
-        String pMensagem = (String) parametros[1];
+        String pMensagem = (String) parametros.get(1);
 
         boolean envioNomeCanal;
 
@@ -46,8 +47,8 @@ public class IntegracaoRestRocketChatEnviarMensagem
 
         }
         String pApelido = null;
-        if (parametros.length == 3) {
-            pApelido = (String) parametros[2];
+        if (parametros.size() == 3) {
+            pApelido = (String) parametros.get(2);
         } else {
             pApelido = getTokenGestao().getLoginNomeUsuario();
         }
@@ -69,8 +70,8 @@ public class IntegracaoRestRocketChatEnviarMensagem
     }
 
     @Override
-    public RespostaWebServiceSimples getResposta() {
-        return (RespostaWebServiceSimples) super.getResposta(); //To change body of generated methods, choose Tools | Templates.
+    public ItfRespostaWebServiceSimples getResposta() {
+        return (ItfRespostaWebServiceSimples) super.getResposta(); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

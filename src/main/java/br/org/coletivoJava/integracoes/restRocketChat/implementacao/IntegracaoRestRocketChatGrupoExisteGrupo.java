@@ -46,7 +46,7 @@ public class IntegracaoRestRocketChatGrupoExisteGrupo
     public void gerarResposta(ConsumoWSExecucao pConsumoRest) {
 
         super.gerarResposta(pConsumoRest); //chamada super do metodo ( implementação classe pai)
-        if (parametros == null || parametros.length < 1) {
+        if (parametros == null || parametros.size() < 1) {
             resposta.addErro("Nenhum parametro foi enviado");
         }
         if (resposta.isSucesso()) {

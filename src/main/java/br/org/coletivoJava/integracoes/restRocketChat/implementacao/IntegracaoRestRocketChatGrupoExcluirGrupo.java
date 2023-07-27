@@ -23,7 +23,7 @@ public class IntegracaoRestRocketChatGrupoExcluirGrupo
         if (getQuantidadeParametrosEnviados() != 1) {
             throw new UnsupportedOperationException("Esperado um parametro para criação do grupo (Parametro nome)");
         }
-        return "{ \"roomId\": \"" + parametros[0] + "\" }";
+        return "{ \"roomId\": \"" + parametros.get(0) + "\" }";
     }
 
 }

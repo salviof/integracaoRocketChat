@@ -24,7 +24,7 @@ public class IntegracaoRestRocketChatGrupoNovo
         if (getQuantidadeParametrosEnviados() != 1) {
             throw new UnsupportedOperationException("Esperado um parametro para criação do grupo (Parametro nome)");
         }
-        return "{ \"name\": \"" + parametros[0] + "\" }";
+        return "{ \"name\": \"" + parametros.get(0) + "\" }";
     }
 
 }
