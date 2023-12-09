@@ -4,7 +4,6 @@
  */
 package br.org.coletivoJava.integracoes.restRocketChat.implementacao;
 
-import br.org.coletivoJava.fw.erp.implementacao.chatService.ItfChatSalaBean;
 import br.org.coletivoJava.fw.erp.implementacao.chatService.ServicoChatRocketChat;
 import com.super_bits.modulosSB.SBCore.ConfigGeral.SBCore;
 import com.super_bits.modulosSB.SBCore.integracao.rocketChat.implementacaoRCRest.ConfigCoreRCTestesRegraNegocio;
@@ -14,6 +13,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import br.org.coletivoJava.fw.erp.implementacao.chatService.ItfChatSalaBeanRC;
 
 /**
  *
@@ -33,7 +33,7 @@ public class IntegracaoRestRocketChatGrupoListarUsuariosTest {
     public void testSomeMethod() {
         // TODO review the generated test code and remove the default call to fail.
         ServicoChatRocketChat instance = new ServicoChatRocketChat();
-        ItfChatSalaBean sala = instance.getChat("TECNOLGIA");
+        ItfChatSalaBeanRC sala = instance.getChat("TECNOLGIA");
         instance.adicionarUsuario(sala, "salviof@gmail.com");
     }
 

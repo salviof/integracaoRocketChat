@@ -13,34 +13,34 @@ import java.util.List;
  */
 public interface ItfErpChatService {
 
-    public ItfChatSalaBean getChat(String nomeSala);
+    public ItfChatSalaBeanRC getChat(String nomeSala);
 
-    public ItfChatSalaBean getChatCriandoSeNaoExistir(String nomeSala) throws ErroConexaoServicoChat;
+    public ItfChatSalaBeanRC getChatCriandoSeNaoExistir(String nomeSala) throws ErroConexaoServicoChat;
 
-    public boolean excluirSala(ItfChatSalaBean nomeSala) throws ErroConexaoServicoChat;
+    public boolean excluirSala(ItfChatSalaBeanRC nomeSala) throws ErroConexaoServicoChat;
 
     public boolean autenticarSessao(String pEmail, String pSenha) throws ErroConexaoServicoChat;
 
-    public List<ItfUsuarioChat> atualizarListaDeUsuarios() throws ErroConexaoServicoChat;
+    public List<ItfUsuarioChatRC> atualizarListaDeUsuarios() throws ErroConexaoServicoChat;
 
-    public ItfUsuarioChat getUsuario(String pEmail) throws ErroConexaoServicoChat;
+    public ItfUsuarioChatRC getUsuario(String pEmail) throws ErroConexaoServicoChat;
 
-    public ItfUsuarioChat getUsuarioByCodigo(String pCodigo) throws ErroConexaoServicoChat;
+    public ItfUsuarioChatRC getUsuarioByCodigo(String pCodigo) throws ErroConexaoServicoChat;
 
-    public List<ItfUsuarioChat> getUsuarios();
+    public List<ItfUsuarioChatRC> getUsuarios();
 
-    public ItfUsuarioChat criarUsuario(ItfUsuario pUsuario) throws ErroConexaoServicoChat;
+    public ItfUsuarioChatRC criarUsuario(ItfUsuario pUsuario) throws ErroConexaoServicoChat;
 
-    public ItfUsuarioChat criarUsuario(ItfUsuario pUsuario, String pSenha) throws ErroConexaoServicoChat;
+    public ItfUsuarioChatRC criarUsuario(ItfUsuario pUsuario, String pSenha) throws ErroConexaoServicoChat;
 
-    public boolean adicionarUsuario(ItfChatSalaBean pSala, String pEmailSenha) throws ErroConexaoServicoChat;
+    public boolean adicionarUsuario(ItfChatSalaBeanRC pSala, String pEmailSenha) throws ErroConexaoServicoChat;
 
-    public ItfUsuarioChat getUsuarioLogado();
+    public ItfUsuarioChatRC getUsuarioLogado();
 
-    public ItfUsuarioChat efetuarLogin(ItfUsuario pUsuario);
+    public ItfUsuarioChatRC efetuarLogin(ItfUsuario pUsuario);
 
-    public ItfUsuarioChat efetuarLogin(ItfUsuario pUsuario, String pSenha);
+    public ItfUsuarioChatRC efetuarLogin(ItfUsuario pUsuario, String pSenha);
 
-    public ItfChatSalaBean getSalaAtualizada(ItfChatSalaBean pSala);
+    public ItfChatSalaBeanRC getSalaAtualizada(ItfChatSalaBeanRC pSala);
 
 }

@@ -73,7 +73,7 @@ public class ServicoChatRocketChatTest {
     public void testGetChat() {
 
         ServicoChatRocketChat instance = new ServicoChatRocketChat();
-        ItfChatSalaBean salaEncontrada = instance.getChat(NOME_SALA);
+        ItfChatSalaBeanRC salaEncontrada = instance.getChat(NOME_SALA);
         assertNotNull("Sala não encontrada", salaEncontrada);
         assertTrue("A sala não foi encontrada", salaEncontrada.isExiste());
 
@@ -83,7 +83,7 @@ public class ServicoChatRocketChatTest {
     public void testGetChatCriandoSeNaoExistir() throws Exception {
         ServicoChatRocketChat instance = new ServicoChatRocketChat();
         try {
-            ItfChatSalaBean salaEncontrada;
+            ItfChatSalaBeanRC salaEncontrada;
             salaEncontrada = instance.getChatCriandoSeNaoExistir(NOME_SALA_NOVA);
             assertNotNull("Sala não encontrada", salaEncontrada);
             assertTrue("A sala não foi encontrada", salaEncontrada.isExiste());
@@ -99,8 +99,8 @@ public class ServicoChatRocketChatTest {
     public void testAtualizarListaDeUsuarios() {
         System.out.println("atualizarListaDeUsuarios");
         ServicoChatRocketChat instance = new ServicoChatRocketChat();
-        List<ItfUsuarioChat> expResult = null;
-        List<ItfUsuarioChat> result;
+        List<ItfUsuarioChatRC> expResult = null;
+        List<ItfUsuarioChatRC> result;
         try {
             result = instance.atualizarListaDeUsuarios();
             assertEquals(expResult, result);
@@ -121,7 +121,7 @@ public class ServicoChatRocketChatTest {
         try {
             ServicoChatRocketChat instance = new ServicoChatRocketChat();
 
-            ItfUsuarioChat result = instance.getUsuario(USUARIO);
+            ItfUsuarioChatRC result = instance.getUsuario(USUARIO);
             assertNotNull("Usuario auxliadora era experada", result);
             // TODO review the generated test code and remove the default call to fail.
         } catch (ErroConexaoServicoChat ex) {
@@ -137,7 +137,7 @@ public class ServicoChatRocketChatTest {
         System.out.println("getUsuarios");
         ServicoChatRocketChat instance = new ServicoChatRocketChat();
 
-        List<ItfUsuarioChat> usuarios = instance.getUsuarios();
+        List<ItfUsuarioChatRC> usuarios = instance.getUsuarios();
         assertNotNull("Resultado não encontrado", usuarios);
         // TODO review the generated test code and remove the default call to fail.
 
@@ -167,7 +167,7 @@ public class ServicoChatRocketChatTest {
 
         ServicoChatRocketChat instance = new ServicoChatRocketChat();
 
-        ItfUsuarioChat usuario = instance.getUsuarioLogado();
+        ItfUsuarioChatRC usuario = instance.getUsuarioLogado();
         assertNotNull("Resultado não encontrado", usuario);
         fail("The test case is a prototype.");
     }
@@ -195,7 +195,7 @@ public class ServicoChatRocketChatTest {
     public void testadicionarUsuario() {
 
         ServicoChatRocketChat instance = new ServicoChatRocketChat();
-        ItfChatSalaBean sala = instance.getChat("TECNOLGIA");
+        ItfChatSalaBeanRC sala = instance.getChat("TECNOLGIA");
         instance.adicionarUsuario(sala, "salviof@gmail.com");
     }
 }

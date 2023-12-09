@@ -4,18 +4,14 @@
  */
 package br.org.coletivoJava.fw.erp.implementacao.chatService;
 
-import java.util.List;
+import br.org.coletivoJava.fw.api.erp.chat.model.ItfUsuarioChat;
 
 /**
  *
  * @author salvio
  */
-public interface ItfUsuarioChat {
+public interface ItfUsuarioChatRC extends ItfUsuarioChat {
 
     public String getCodigo();
-
-    public String getEmailPrincipal();
-
-    public List<String> getEmailsSecundarios();
 
 }

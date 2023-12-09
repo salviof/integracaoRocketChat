@@ -33,17 +33,17 @@ import java.util.logging.Logger;
  */
 public class ServicoChatRocketChat implements ItfErpChatService {
 
-    private final static List<ItfChatSalaBean> ULTIMAS_SALAS = new ArrayList<>();
+    private final static List<ItfChatSalaBeanRC> ULTIMAS_SALAS = new ArrayList<>();
     private final static Map<String, Integer> MAPA_INDICE_SALA = new HashMap<>();
-    private final static Map<String, ItfUsuarioChat> MAPA_USUARIOS = new HashMap<>();
+    private final static Map<String, ItfUsuarioChatRC> MAPA_USUARIOS = new HashMap<>();
 
     private static int slot = 0;
 
-    private synchronized void persistirUsuario(ItfUsuarioChat pSala) {
+    private synchronized void persistirUsuario(ItfUsuarioChatRC pSala) {
         MAPA_USUARIOS.put(pSala.getEmailPrincipal(), pSala);
     }
 
-    private synchronized void persistirSala(ItfChatSalaBean pSala) {
+    private synchronized void persistirSala(ItfChatSalaBeanRC pSala) {
 
         if (slot > 20) {
             slot = 0;
@@ -95,7 +95,7 @@ public class ServicoChatRocketChat implements ItfErpChatService {
 
     }
 
-    private ItfChatSalaBean getSalaConsultandoApi(String pNome) {
+    private ItfChatSalaBeanRC getSalaConsultandoApi(String pNome) {
         SalaChatBeanTransitorio salaChat = new SalaChatBeanTransitorio();
         salaChat.setNome(pNome);
         IntegracaoRestRocketChatGrupoExisteGrupo grupoExisteApi = (IntegracaoRestRocketChatGrupoExisteGrupo) FabApiRestRocketChatV1Channel.GRUPO_EXISTE_GRUPO.getAcao(pNome);
@@ -111,12 +111,12 @@ public class ServicoChatRocketChat implements ItfErpChatService {
             if (respostaListarUsuarios.isSucesso()) {
                 JsonObject usuariosDoGrupoJson = respostaListarUsuarios.getRespostaComoObjetoJson();
                 JsonArray membros = usuariosDoGrupoJson.getJsonArray("members");
-                List<ItfUsuarioChat> listaUsiariosMembros = new ArrayList<>();
+                List<ItfUsuarioChatRC> listaUsiariosMembros = new ArrayList<>();
                 for (Object membro : membros) {
                     JsonObject membroJsonOb = (JsonObject) membro;
                     String codigoMembro = (String) membroJsonOb.getString("_id");
                     try {
-                        ItfUsuarioChat usuario = getUsuarioByCodigo(codigoMembro);
+                        ItfUsuarioChatRC usuario = getUsuarioByCodigo(codigoMembro);
                         listaUsiariosMembros.add(usuario);
 
                     } catch (ErroConexaoServicoChat ex) {
@@ -137,11 +137,11 @@ public class ServicoChatRocketChat implements ItfErpChatService {
     }
 
     @Override
-    public ItfChatSalaBean getChat(String pNome) {
+    public ItfChatSalaBeanRC getChat(String pNome) {
 
         Integer indice = MAPA_INDICE_SALA.get(pNome);
         if (indice == null) {
-            ItfChatSalaBean salaChat = getSalaConsultandoApi(pNome);
+            ItfChatSalaBeanRC salaChat = getSalaConsultandoApi(pNome);
 
             persistirSala(salaChat);
 
@@ -153,8 +153,8 @@ public class ServicoChatRocketChat implements ItfErpChatService {
     }
 
     @Override
-    public ItfChatSalaBean getChatCriandoSeNaoExistir(String pNomeSala) throws ErroConexaoServicoChat {
-        ItfChatSalaBean sala = getChat(pNomeSala);
+    public ItfChatSalaBeanRC getChatCriandoSeNaoExistir(String pNomeSala) throws ErroConexaoServicoChat {
+        ItfChatSalaBeanRC sala = getChat(pNomeSala);
         if (!sala.isExiste()) {
             ItfRespostaWebServiceSimples resp = FabApiRestRocketChatV1Channel.GRUPO_NOVO.getAcao(pNomeSala).getResposta();
             if (!resp.isSucesso()) {
@@ -183,7 +183,7 @@ public class ServicoChatRocketChat implements ItfErpChatService {
     }
 
     @Override
-    public List<ItfUsuarioChat> atualizarListaDeUsuarios() throws ErroConexaoServicoChat {
+    public List<ItfUsuarioChatRC> atualizarListaDeUsuarios() throws ErroConexaoServicoChat {
         if (!FabApiRestRokcetChatV1Users.USUARIOS_LISTAR.getAcao().getTokenGestao().isTemTokemAtivo()) {
             FabApiRestRokcetChatV1Users.USUARIOS_LISTAR.getAcao().getTokenGestao().gerarNovoToken();
         }
@@ -229,8 +229,8 @@ public class ServicoChatRocketChat implements ItfErpChatService {
     }
 
     @Override
-    public ItfUsuarioChat getUsuario(String pEmail) throws ErroConexaoServicoChat {
-        ItfUsuarioChat usuario = MAPA_USUARIOS.get(pEmail);
+    public ItfUsuarioChatRC getUsuario(String pEmail) throws ErroConexaoServicoChat {
+        ItfUsuarioChatRC usuario = MAPA_USUARIOS.get(pEmail);
         if (usuario != null) {
             return usuario;
         }
@@ -260,13 +260,13 @@ public class ServicoChatRocketChat implements ItfErpChatService {
     }
 
     @Override
-    public List<ItfUsuarioChat> getUsuarios() {
+    public List<ItfUsuarioChatRC> getUsuarios() {
         return Lists.newArrayList(MAPA_USUARIOS.values());
     }
 
     @Override
-    public ItfUsuarioChat getUsuarioByCodigo(String pCodigo) throws ErroConexaoServicoChat {
-        Optional<ItfUsuarioChat> usuarioPesquisa
+    public ItfUsuarioChatRC getUsuarioByCodigo(String pCodigo) throws ErroConexaoServicoChat {
+        Optional<ItfUsuarioChatRC> usuarioPesquisa
                 = MAPA_USUARIOS.values()
                         .stream().filter(usuario -> usuario.getCodigo().equals(pCodigo)).findFirst();
 
@@ -293,16 +293,16 @@ public class ServicoChatRocketChat implements ItfErpChatService {
     }
 
     @Override
-    public ItfUsuarioChat criarUsuario(ItfUsuario pUsuario) throws ErroConexaoServicoChat {
+    public ItfUsuarioChatRC criarUsuario(ItfUsuario pUsuario) throws ErroConexaoServicoChat {
 
         return criarUsuario(pUsuario, buildSenha(pUsuario));
 
     }
 
     @Override
-    public ItfUsuarioChat criarUsuario(ItfUsuario pUsuario, String pSenha) throws ErroConexaoServicoChat {
+    public ItfUsuarioChatRC criarUsuario(ItfUsuario pUsuario, String pSenha) throws ErroConexaoServicoChat {
 
-        ItfUsuarioChat usuarioJaCadastrado = getUsuario(pUsuario.getEmail());
+        ItfUsuarioChatRC usuarioJaCadastrado = getUsuario(pUsuario.getEmail());
 
         if (usuarioJaCadastrado == null) {
             ItfRespostaWebServiceSimples resposta = FabApiRestRokcetChatV1Users.USUARIOS_CRIAR.getAcao(pUsuario.getNome(), pUsuario.getEmail(), pSenha, pUsuario.getApelido()).getResposta();
@@ -321,9 +321,9 @@ public class ServicoChatRocketChat implements ItfErpChatService {
     }
 
     @Override
-    public ItfUsuarioChat getUsuarioLogado() {
+    public ItfUsuarioChatRC getUsuarioLogado() {
         try {
-            ItfUsuarioChat usuario = getUsuario(SBCore.getUsuarioLogado().getEmail());
+            ItfUsuarioChatRC usuario = getUsuario(SBCore.getUsuarioLogado().getEmail());
             return usuario;
         } catch (ErroConexaoServicoChat ex) {
             Logger.getLogger(ServicoChatRocketChat.class.getName()).log(Level.SEVERE, null, ex);
@@ -332,12 +332,12 @@ public class ServicoChatRocketChat implements ItfErpChatService {
     }
 
     @Override
-    public ItfUsuarioChat efetuarLogin(ItfUsuario pUsuario) {
+    public ItfUsuarioChatRC efetuarLogin(ItfUsuario pUsuario) {
         return efetuarLogin(pUsuario, buildSenha(pUsuario));
     }
 
     @Override
-    public ItfUsuarioChat efetuarLogin(ItfUsuario pUsuario, String pSenha) {
+    public ItfUsuarioChatRC efetuarLogin(ItfUsuario pUsuario, String pSenha) {
         try {
             if (autenticarSessao(pUsuario.getEmail(), pSenha)) {
                 return getUsuario(pUsuario.getEmail());
@@ -351,14 +351,14 @@ public class ServicoChatRocketChat implements ItfErpChatService {
     }
 
     @Override
-    public boolean excluirSala(ItfChatSalaBean nomeSala) throws ErroConexaoServicoChat {
+    public boolean excluirSala(ItfChatSalaBeanRC nomeSala) throws ErroConexaoServicoChat {
         return FabApiRestRocketChatV1Channel.GRUPO_EXCLUIR_GRUPO.getAcao(nomeSala.getCodigo()).getResposta().isSucesso();
     }
 
     @Override
-    public boolean adicionarUsuario(ItfChatSalaBean pSala, String pEmailSenha) {
+    public boolean adicionarUsuario(ItfChatSalaBeanRC pSala, String pEmailSenha) {
         try {
-            ItfUsuarioChat usuario = getUsuario(pEmailSenha);
+            ItfUsuarioChatRC usuario = getUsuario(pEmailSenha);
             if (pSala.getUsuarios().stream().filter(us -> us.getEmailPrincipal().equals(pEmailSenha)).findAny().isPresent()) {
                 return true;
             }
@@ -373,7 +373,7 @@ public class ServicoChatRocketChat implements ItfErpChatService {
     }
 
     @Override
-    public ItfChatSalaBean getSalaAtualizada(ItfChatSalaBean pSala) {
+    public ItfChatSalaBeanRC getSalaAtualizada(ItfChatSalaBeanRC pSala) {
         MAPA_INDICE_SALA.remove(pSala.getNome());
         return getChat(pSala.getNome());
     }

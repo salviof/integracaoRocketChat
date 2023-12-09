@@ -4,7 +4,6 @@
  */
 package br.org.coletivoJava.integracoes.restRocketChat.implementacao;
 
-import br.org.coletivoJava.fw.erp.implementacao.chatService.ItfChatSalaBean;
 import br.org.coletivoJava.fw.erp.implementacao.chatService.ServicoChatRocketChat;
 import br.org.coletivoJava.integracoes.restRocketChat.api.channel.FabApiRestRocketChatV1Channel;
 import br.org.coletivoJava.integracoes.restRocketChat.api.sessao.FabApiRestRocketChatSessao;
@@ -16,6 +15,7 @@ import com.super_bits.modulosSB.SBCore.integracao.rocketChat.implementacaoRCRest
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import br.org.coletivoJava.fw.erp.implementacao.chatService.ItfChatSalaBeanRC;
 
 /**
  *
